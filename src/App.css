@@ -1,0 +1,53 @@
+/* 전체 페이지 스타일을 초기화 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* HTML과 Body 기본 설정 */
+html, body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* 전체 컨테이너 */
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 링크 스타일 초기화 */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 이미지 반응형 설정 */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 버튼 기본 설정 */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* input, textarea 기본 스타일 */
+input, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* 스마트폰 화면을 위한 기본 반응형 설정 */
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
