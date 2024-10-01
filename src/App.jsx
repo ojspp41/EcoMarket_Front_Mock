@@ -1,14 +1,24 @@
-
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css'
-import Navbar from './components/Navbar'
+import Register from './pages/Register'
+import Search from './pages/Search'
+import Profile from './pages/Profile'
+import Navbar from './components/Navbar';
 function App() {
   
 
   return (
-    <>
-      ecomarket
-      <Navbar/>
-    </>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+        <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
+      </div>
+    </Router>
   )
 }
 

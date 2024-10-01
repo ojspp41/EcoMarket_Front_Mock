@@ -21,6 +21,7 @@
 .nav-icon {
   width: 24px; /* 아이콘 크기는 필요에 따라 조절하세요 */
   height: 24px;
+  color : #d5d5d5;
 }
 
 .nav-text {
