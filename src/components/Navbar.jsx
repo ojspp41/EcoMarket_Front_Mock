@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 us
 import '../css/components/Navbar.css'; // CSS를 별도 파일로 관리합니다.
 
 const Navbar = () => {
-  const [active, setActive] = useState('등록'); // 기본 활성 아이콘 설정
+  const [active, setActive] = useState('경매'); // 기본 활성 아이콘 설정
   const navigate = useNavigate();
 
   const handleClick = (name, path) => {
@@ -21,13 +21,13 @@ const Navbar = () => {
         />
         <span className="nav-text">등록</span>
       </div>
-      <div className="nav-item" onClick={() => handleClick('검색', '/search')}>
+      <div className="nav-item" onClick={() => handleClick('경매', '/auction')}>
         <img
-          src={active === '검색' ? '/assets/navicon2active.svg' : '/assets/navicon2.svg'}
+          src={active === '경매' ? '/assets/navicon2active.svg' : '/assets/navicon2.svg'}
           alt="Icon 2"
           className="nav-icon"
         />
-        <span className="nav-text">검색</span>
+        <span className="nav-text">경매</span>
       </div>
       <div className="nav-item" onClick={() => handleClick('프로필', '/profile')}>
         <img
