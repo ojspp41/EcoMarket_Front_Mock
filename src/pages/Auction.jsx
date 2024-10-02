@@ -1,8 +1,51 @@
 // pages/SearchPage.js
 import React from 'react';
-
-const Auction= () => {
-  return <div>경매 페이지</div>;
+import SearchBar from '../components/SearchContainer';
+import "../css/pages/Auction.css";
+import auchor_categories from '../data/auchor_categories';
+const Auction = () => {
+  return (
+    <div className="auction-container"> {/* 큰 컨테이너 */}
+        <SearchBar/>
+        <div className="main_desc">
+          <p>중고 물품을 <br />경매로</p>
+        </div>
+        <div className="auction-info">
+          <div className="left-content">
+            <div className="step">
+              <div className="step-circle">1</div>
+              <p>원하는 물품을 찾고</p>
+            </div>
+            <div className="step">
+              <div className="step-circle">2</div>
+              <p>입찰 가격 제시하면</p>
+            </div>
+            <div className="step">
+              <div className="step-circle">3</div>
+              <p>마감 때 제일 높은 가격이 낙찰!</p>
+            </div>
+          </div>
+          <div className="right-content">
+            {/* 여기에 SVG 아이콘을 추가 */}
+            <img src="/assets/mainicon.svg" alt="icon" className="auction-icon" />
+          </div>
+        </div>
+        <div className="auction-category">
+          <h2 className="category-title">경매 카테고리</h2>
+          <div className="category-grid">
+            {auchor_categories.map((category, index) => (
+              <div className="category-item" key={index}>
+                <div className="category-circle">
+                  <img src={category.img} alt={category.title} />
+                </div>
+                <p className="category-label">{category.title}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+    </div>
+  );
 };
 
 export default Auction;
