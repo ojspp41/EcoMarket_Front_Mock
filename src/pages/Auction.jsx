@@ -3,7 +3,28 @@ import React from 'react';
 import SearchBar from '../components/SearchContainer';
 import "../css/pages/Auction.css";
 import auchor_categories from '../data/auchor_categories';
+import AuctionItem from '../components/AuctionItem';
 const Auction = () => {
+  const mockAuctionData = [
+    {
+      id: 1,
+      img: '/assets/item1.svg',
+      title: '모나리자',
+      desc: '레오나르도 다빈치 작품',
+      category: '그림',
+      currentBidderCount: 12345,
+      price: 500000
+    },
+    {
+      id: 2,
+      img: '/assets/item1.svg',
+      title: '모나리자',
+      desc: '레오나르도 다빈치 작품',
+      category: '그림',
+      currentBidderCount: 12345,
+      price: 500000
+    },
+  ];
   return (
     <div className="auction-container"> {/* 큰 컨테이너 */}
         <SearchBar/>
@@ -43,7 +64,15 @@ const Auction = () => {
             ))}
           </div>
         </div>
-        
+        <div className="recent-auctions">
+          <h2 className="recent-auctions-title">최근 올라온 경매</h2>
+          <div className="auction-list">
+            {mockAuctionData.map((auction) => (
+              <AuctionItem auction={auction} key={auction.id} /> 
+            ))}
+          </div>
+        </div>
+        <div style={{ marginBottom: '150px' }}></div>
     </div>
   );
 };

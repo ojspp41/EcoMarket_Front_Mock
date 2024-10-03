@@ -45,6 +45,7 @@
   font-family: 'Pretendard', sans-serif;
   font-size: 15px;
   margin-right: 10px;
+  
 }
 
 .right-content {
@@ -74,6 +75,7 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* 한 줄에 5개의 아이템 */
   gap: 2px; /* 아이템들 사이의 간격 */
+  row-gap: 20px;
 }
 
 
@@ -86,7 +88,7 @@
 .category-circle {
   width: 62px;
   height: 62px;
-  
+  border: 1px solid #d3d3d3;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -99,7 +101,20 @@
 }
 
 .category-label {
-  margin-top: 10px;
+  margin-top: 5px;
   font-family: 'Pretendard', sans-serif;
   font-size: 15px;
+}
+.recent-auctions {
+  margin-top: 40px;
+}
+
+.recent-auctions-title {
+  font-size: 20px;
+  font-weight: bold;
+  font-family: 'Pretendard', sans-serif;
+  margin-bottom: 20px;
+}
+.auction-item{
+  display: flex;
 }
