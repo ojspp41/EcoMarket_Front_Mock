@@ -6,21 +6,25 @@ import Auction from './pages/Auction';
 import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
+import GlobalStyle from './css/GlobalStyle';
 function App() {
   
 
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/login" element={<LoginPage/>} /> 
-          <Route path="/register" element={<Register />} />
-          <Route path="/auction" element={<Auction />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-        <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
-      </div>
-    </Router>
+    <>
+      <GlobalStyle/>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/login" element={<LoginPage/>} /> 
+            <Route path="/register" element={<Register />} />
+            <Route path="/auction" element={<Auction />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+          <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
+        </div>
+      </Router>
+    </>
   )
 }
 
