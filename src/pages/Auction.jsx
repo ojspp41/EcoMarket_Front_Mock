@@ -1,30 +1,26 @@
 // pages/SearchPage.js
-import React from 'react';
+import React, { useState } from 'react';
 import SearchBar from '../components/SearchContainer';
 import "../css/pages/Auction.css";
 import auchor_categories from '../data/auchor_categories';
 import AuctionItem from '../components/AuctionItem';
+import UpcomingAuctionItem from '../components/UpcomingAuctionItem';
+import { Navigate } from 'react-router-dom';
+import mockAuctionData from '../data/mockAuctionData'; // import mock auction data
+import mockUpcomingAuctions from '../data/mockUpcomingAuctions'; // import mock upcoming auctions
+import { useNavigate } from 'react-router-dom';
+
 const Auction = () => {
-  const mockAuctionData = [
-    {
-      id: 1,
-      img: '/assets/item1.svg',
-      title: '모나리자',
-      desc: '레오나르도 다빈치 작품',
-      category: '그림',
-      currentBidderCount: 12345,
-      price: 500000
-    },
-    {
-      id: 2,
-      img: '/assets/item1.svg',
-      title: '모나리자',
-      desc: '레오나르도 다빈치 작품',
-      category: '그림',
-      currentBidderCount: 12345,
-      price: 500000
-    },
-  ];
+  const navigate = useNavigate();
+  const [selectedCategory, setSelectedCategory] = useState(null); // 선택된 카테고리 상태
+
+  const navigateToCategoryPage = () => {
+    navigate('/category-page');  // 원하는 경로로 설정
+  };
+  const handleCategoryClick = (index) => { 
+    setSelectedCategory(index); // 선택된 카테고리 업데이트
+  };
+  
   return (
     <div className="auction-container"> {/* 큰 컨테이너 */}
         <SearchBar/>
@@ -55,7 +51,11 @@ const Auction = () => {
           <h2 className="category-title">경매 카테고리</h2>
           <div className="category-grid">
             {auchor_categories.map((category, index) => (
-              <div className="category-item" key={index}>
+              <div
+                className={`category-item ${selectedCategory === index ? 'selected' : ''}`}
+                key={index}
+                onClick={() => handleCategoryClick(index)} // 카테고리 클릭 시 호출
+              >
                 <div className="category-circle">
                   <img src={category.img} alt={category.title} />
                 </div>
@@ -65,11 +65,23 @@ const Auction = () => {
           </div>
         </div>
         <div className="recent-auctions">
-          <h2 className="recent-auctions-title">최근 올라온 경매</h2>
+        <div className="recent-auctions-header">
+          <h2 className="recent-auctions-titles">해당 카테고리 최근 TOP5 경매</h2>
+          <span className="view-all-text" onClick={() => navigateToCategoryPage()}>전체보기</span>
+        </div>
           <div className="auction-list">
             {mockAuctionData.map((auction) => (
               <AuctionItem auction={auction} key={auction.id} /> 
             ))}
+          </div>
+        </div>
+        <div className="recent-auctionss">
+          <h2 className="recent-auctions-title">진행 예정 경매</h2>
+          <p className="upcoming-auctions-message">오픈을 앞둔 경매를 미리 둘러보세요!</p>
+          <div className="upcoming-auction-list">
+              {mockUpcomingAuctions.map((auction) => (
+                <UpcomingAuctionItem auction={auction} key={auction.id} />
+              ))}
           </div>
         </div>
         <div style={{ marginBottom: '150px' }}></div>

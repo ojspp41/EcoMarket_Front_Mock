@@ -103,3 +103,8 @@
     width: 6px;
     height: 10px;
   }
+  
+  .category-item.selected .category-circle {
+    background-color: rgba(43, 222, 93, 0.1);  /* 선택 시 백그라운드가 100% */
+    border-color: #2bde5d; /* 선택 시 경계색도 2bde5d */
+  }

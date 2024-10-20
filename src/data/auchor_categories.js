@@ -8,36 +8,36 @@ const auchor_categories = [
     title: '음반',
   },
   {
-    img: '/assets/drawing.svg',
+    img: '/assets/act.svg',
     title: '악기',
   },
   {
-    img: '/assets/drawing.svg',
+    img: '/assets/shoes.svg',
     title: '신발',
   },
   {
-    img: '/assets/drawing.svg',
-    title: '명품',
+    img: '/assets/cloth.svg',
+    title: '의류',
   },
   {
-    img: '/assets/drawing.svg',
-    title: '명품',
+    img: '/assets/electric.svg',
+    title: '전자',
   },
   {
-    img: '/assets/drawing.svg',
-    title: '그림',
+    img: '/assets/juwel.svg',
+    title: '주얼리',
   },
   {
-    img: '/assets/drawing.svg',
-    title: '구람',
-  },
-  {
-    img: '/assets/drawing.svg',
-    title: '광고',
-  },
-  {
-    img: '/assets/drawing.svg',
+    img: '/assets/bag.svg',
     title: '가방',
+  },
+  {
+    img: '/assets/season.svg',
+    title: '계절템',
+  },
+  {
+    img: '/assets/star.svg',
+    title: '한정판',
   },
 ];
 
