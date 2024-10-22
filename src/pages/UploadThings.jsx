@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import GetAddress from "../api/GetAddress";
 
 function UploadThings() {
-  // 각각의 input 상태를 관리하기 위한 state
   const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(""); 
   const [startPrice, setStartPrice] = useState("");
-  const [productPhoto, setProductPhoto] = useState("");
+  const [productPhoto, setProductPhoto] = useState(null); 
   const [productInfo, setProductInfo] = useState("");
 
   const navigate = useNavigate();
 
-  // 모든 필드가 채워졌는지 확인하는 함수
   const isFormComplete = () => {
-    return name && nickname && zipcode && address && detailAddress;
+    return productName && category && startPrice && productPhoto && productInfo;
   };
 
-  // 페이지 이동 함수
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProductPhoto(URL.createObjectURL(file)); 
+    }
+  };
+
   const goToUpload = () => {
     if (isFormComplete()) {
       navigate("/upload");
@@ -45,56 +48,75 @@ function UploadThings() {
 
         <InputGroup>
           <label>카테고리 선택</label>
-          <input
-            type="text"
-            placeholder="상품 카테고리 선택"
+          <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className={category ? "filled" : ""}
-          />
+          >
+            <option value="" disabled>
+              상품 카테고리 선택
+            </option>
+            <option value="electronics">전자기기</option>
+            <option value="fashion">패션</option>
+            <option value="furniture">가구</option>
+            <option value="other">기타</option>
+          </select>
         </InputGroup>
-
-        <AddressGroup>
-          <label>희망 시작 가격</label>
-          <div className="address-row">
-            <input
-              type="text"
-              placeholder="우편번호"
-              className={`zipcode ${photo ? "filled" : ""}`}
-              value={photo}
-              onChange={(e) => setPhoto(e.target.value)}
-            />
-            {/* <button onClick={}>검색하기</button> 사진 가져오는 무언가 */}
-          </div>
-        </AddressGroup>
 
         <InputGroup>
           <label>희망 시작 가격</label>
-          <div className="address-row">
+          <input
+            type="text"
+            placeholder="경매를 시작할 희망 시작 가격을 입력해주세요."
+            value={startPrice}
+            onChange={(e) => setStartPrice(e.target.value)}
+            className={startPrice ? "filled" : ""}
+          />
+        </InputGroup>
+
+        <InputGroup>
+          <label>상품 사진</label>
+          <PhotoContainer>
             <input
-              type="text"
-              placeholder="우편번호"
-              className={`zipcode ${photo ? "filled" : ""}`}
-              value={photo}
-              onChange={(e) => setPhoto(e.target.value)}
+              type="file"
+              accept="image/*"
+              onChange={handlePhotoChange}
+              style={{ display: "none" }}
+              id="product-photo"
             />
-            {/* <button onClick={}>검색하기</button> 사진 가져오는 무언가 */}
-          </div>
+            <PhotoLabel htmlFor="product-photo">
+              {productPhoto ? (
+                <img src={productPhoto} alt="Selected product" />
+              ) : (
+                <PlusIcon>+</PlusIcon>
+              )}
+            </PhotoLabel>
+          </PhotoContainer>
+        </InputGroup>
+
+        <InputGroup>
+          <label>상품 설명</label>
+          <textarea
+            placeholder="상품에 대한 부가 설명을 상세히 작성해주세요."
+            value={productInfo}
+            onChange={(e) => setProductInfo(e.target.value)}
+            className={productInfo ? "filled" : ""}
+          />
         </InputGroup>
 
         <GuideGroup>
           <label>상품 검수 과정</label>
           <div className="guideBlock">
             <div className="chapter">
-              <img src="aa" />
+              <img src="aa" alt="시작가 검토" />
               시작가 검토
             </div>
             <div className="chapter">
-              <img src="bb" />
+              <img src="bb" alt="상품 검토" />
               상품 검토
             </div>
             <div className="chapter">
-              <img src="cc" />
+              <img src="cc" alt="검수 완료" />
               검수 완료
             </div>
           </div>
@@ -118,8 +140,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 84px 20px 20px 20px;
+  padding: 84px 30px 20px 30px;
   font-family: "Pretendard", sans-serif;
+  padding-bottom: 400px; /* 하단에 추가 공간을 확보하여 스크롤 가능하도록 설정 */
 `;
 
 const TitleGroup = styled.div`
@@ -142,7 +165,7 @@ const TitleGroup = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 55px;
+  gap: 16px;
   width: 100%;
 `;
 
@@ -156,83 +179,67 @@ const InputGroup = styled.div`
     font-weight: bold;
   }
 
-  input {
+  input,
+  select,
+  textarea {
     padding: 12px;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     font-size: 15px;
-    height: 51px;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
 
     &.filled {
-      border-color: var(--color-main); /* 텍스트가 있을 때 border 색 변경 */
+      border-color: var(--color-main);
     }
 
     &::placeholder {
       color: #cccccc;
     }
+  }
+
+  textarea {
+    height: 220px;
+  }
+
+  select {
+    height: 51px;
   }
 `;
 
-const AddressGroup = styled.div`
+const PhotoContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+`;
 
-  label {
-    font-size: 15px;
-    margin-bottom: 8px;
-    font-weight: bold;
+const PhotoLabel = styled.label`
+  width: 110px;
+  height: 110px;
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
+`;
 
-  .address-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-
-    .zipcode {
-      flex: 2;
-      padding: 12px;
-      border: 1px solid #e0e0e0;
-      border-radius: 10px;
-      font-size: 14px;
-      width: 368px;
-      height: 51px;
-    }
-
-    button {
-      flex: 1;
-      padding: 12px;
-      background-color: black;
-      color: white;
-      border: none;
-      font-family: "Pretendard";
-      height: 51px;
-      border-radius: 10px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-  }
-
-  input {
-    padding: 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    height: 51px;
-
-    &::placeholder {
-      color: #cccccc;
-    }
-  }
+const PlusIcon = styled.span`
+  font-size: 50px;
+  color: black;
 `;
 
 const GuideGroup = styled.div``;
 
 const SubmitButton = styled.button`
   position: fixed;
-  bottom: 16px;
+  bottom: 86px;
   width: 370px;
   padding: 15px;
   background-color: #f2f2f2;
@@ -247,10 +254,8 @@ const SubmitButton = styled.button`
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &.active {
-    background-color: var(
-      --color-main
-    ); /* 모든 입력 필드가 채워지면 배경색 변경 */
-    color: white; /* 모든 입력 필드가 채워지면 글자색 변경 */
+    background-color: var(--color-main);
+    color: white;
     cursor: pointer;
   }
 `;

@@ -14,14 +14,14 @@ function App() {
       <GlobalStyle />
       <Router>
         <div className="App">
+          <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/auction" element={<Auction />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/uploadfile" element={<UploadThings />} />
+            <Route path="/upload" element={<UploadThings />} />
           </Routes>
-          <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
         </div>
       </Router>
     </>
