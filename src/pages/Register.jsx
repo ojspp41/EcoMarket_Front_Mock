@@ -21,7 +21,7 @@ function Register() {
   // 페이지 이동 함수
   const goToHome = () => {
     if (isFormComplete()) {
-      navigate('/home');
+      navigate('/');
     }
   };
 

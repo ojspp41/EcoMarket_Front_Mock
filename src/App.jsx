@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import Navbar from './components/Navbar';
 import LoginPage from './pages/LoginPage';
 import GlobalStyle from './css/GlobalStyle';
+import UploadThings from './pages/UploadThings';
 function App() {
   
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Auction />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/upload" element={<UploadThings />} />
           </Routes>
           <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
         </div>
