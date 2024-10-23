@@ -1,0 +1,70 @@
+.upcoming-auction-item {
+    margin-top: 25px;
+    width: 236px;
+    height: 115px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    padding: 15px 12px;
+    margin-bottom: 20px;
+  }
+  
+  .auction-image {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .auction-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .category-item {
+    font-size: 12px;
+    color: #8b95a1;
+    font-family: Pretendard, sans-serif;
+  }
+  
+  .auction-title {
+    font-size: 12px;
+    font-family: Pretendard, sans-serif;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+  
+  .auction-date {
+    font-family: Pretendard, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+  }
+  
+  .date-background {
+    background-color: #f15c5c;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 4px;
+    border-radius: 10px;
+  }
+  .auction-item-categorys {
+    width: 31px;
+    height: 16px;
+    background-color: #1feb5913;
+    color: #2bde5d;
+    font-size: 10px;
+    font-family: 'Pretendard', sans-serif;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+
+  }
+  .auction-price {
+    font-size: 12px;
+    font-weight: bold;
+    color: #2b2b2b;
+    margin-top: 2px;
+  }
