@@ -6,23 +6,24 @@ function UploadThings() {
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [startPrice, setStartPrice] = useState("");
-  const [productPhoto, setProductPhoto] = useState(null);
+  const [productPhotos, setProductPhotos] = useState([]); // 최대 3장까지 선택 가능
+  const [productInfo, setProductInfo] = useState("");
 
   const navigate = useNavigate();
-
 
   const goToMain = () => {
     navigate("/");
   };
 
   const isFormComplete = () => {
-    return productName && category && startPrice && productPhoto && productInfo;
+    return productName && category && startPrice && productPhotos.length > 0 && productInfo;
   };
 
   const handlePhotoChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProductPhoto(URL.createObjectURL(file));
+    const files = Array.from(e.target.files);
+    if (files.length > 0 && productPhotos.length + files.length <= 3) {
+      const photoURLs = files.map((file) => URL.createObjectURL(file));
+      setProductPhotos([...productPhotos, ...photoURLs].slice(0, 3)); // 최대 3개까지만 저장
     }
   };
 
@@ -35,7 +36,7 @@ function UploadThings() {
   return (
     <Container>
       <TitleGroup>
-        <img src="/assets/etcpage/slash.svg" alt="" onClick={goToMain} />
+        <img src="/assets/etcpage/Vector.svg" alt="" onClick={goToMain} />
         <h1>상품 등록</h1>
       </TitleGroup>
 
@@ -91,10 +92,13 @@ function UploadThings() {
               onChange={handlePhotoChange}
               style={{ display: "none" }}
               id="product-photo"
+              multiple // 여러 사진 선택 가능하게 설정
             />
             <PhotoLabel htmlFor="product-photo">
-              {productPhoto ? (
-                <img src={productPhoto} alt="Selected product" />
+              {productPhotos.length > 0 ? (
+                productPhotos.map((photo, index) => (
+                  <PhotoPreview key={index} src={photo} alt={`Selected product ${index + 1}`} />
+                ))
               ) : (
                 <PlusIcon>+</PlusIcon>
               )}
@@ -116,39 +120,24 @@ function UploadThings() {
         <GuideGroup>
           <StepContainer>
             <CircleWrapper>
-              <img src="url_to_image1" alt="시작가 검토" />
+              <img src="/assets/etcpage/money.svg" alt="시작가 검토" />
             </CircleWrapper>
-            <ArrowIcon>{">"}</ArrowIcon>
+            <ArrowIcon><img src="/assets/etcpage/Vector.svg" alt="" /></ArrowIcon>
             <CircleWrapper>
-              <img src="url_to_image2" alt="상품 검토" />
+              <img src="/assets/etcpage/eye.svg" alt="상품 검토" />
             </CircleWrapper>
-            <ArrowIcon>{">"}</ArrowIcon>
+            <ArrowIcon><img src="/assets/etcpage/Vector.svg" alt="" /></ArrowIcon>
             <CircleWrapper>
-              <img src="url_to_image3" alt="검수 완료" />
+              <img src="/assets/etcpage/thumb.svg" alt="검수 완료" />
             </CircleWrapper>
           </StepContainer>
-        <GuideGroup>
-          <label>상품 검수 과정</label>
-          <div className="guideBlock">
-            <div className="chapter">
-              <img src="aa" alt="시작가 검토" />
-              시작가 검토
-            </div>
-            <div className="chapter">
-              <img src="bb" alt="상품 검토" />
-              상품 검토
-            </div>
-            <div className="chapter">
-              <img src="cc" alt="검수 완료" />
-              검수 완료
-            </div>
-          </div>
         </GuideGroup>
       </Form>
 
       <SubmitButton
         className={isFormComplete() ? "active" : ""}
-        onClick={isFormComplete() ? goToUpload : null}
+        disabled={!isFormComplete()}
+        onClick={goToUpload}
       >
         {isFormComplete() ? "상품 등록하기" : "내용을 모두 입력해주세요!"}
       </SubmitButton>
@@ -163,9 +152,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 84px 30px 20px 30px;
+  padding: 72px 30px 20px 30px;
   font-family: "Pretendard", sans-serif;
-  padding-bottom: 180px; /* 하단에 추가 공간을 확보하여 스크롤 가능하도록 설정 */
+  padding-bottom: 180px;
 `;
 
 const TitleGroup = styled.div`
@@ -175,10 +164,12 @@ const TitleGroup = styled.div`
   display: flex;
   justify-content: bottom;
   img {
-    size: 25px;
-    transform: scaleX(-1);
+    width: 10px;
+    height: 16px;
     display: inline;
+    margin-top: 7px;
     margin-right: 10px;
+    transform: scaleX(-1);
   }
 
   h1 {
@@ -199,6 +190,8 @@ const Form = styled.form`
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  box-sizing: border-box;
+
   label {
     font-size: 15px;
     font-weight: bold;
@@ -242,8 +235,8 @@ const InputGroup = styled.div`
     height: 51px;
   }
   .subLabel {
-    margin: 5px 0px 10px 0px;
-    font-size: 10px;
+    margin: 2px 0px 10px 0px;
+    font-size: 12px;
     color: black;
     text-align: left;
   }
@@ -251,7 +244,10 @@ const InputGroup = styled.div`
 
 const PhotoContainer = styled.div`
   display: flex;
-  justify-content: left;
+  gap: 10px;
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
 `;
 
 const PhotoLabel = styled.label`
@@ -264,6 +260,52 @@ const PhotoLabel = styled.label`
   align-items: center;
   cursor: pointer;
   overflow: hidden;
+  position: relative;
+`;
+
+const PhotoPreview = styled.img`
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 10px;
+`;
+
+const PlusIcon = styled.span`
+  font-size: 50px;
+  color: black;
+`;
+
+const GuideGroup = styled.div`
+  width: 100%;
+  max-width: 330px;
+  height: 146px;
+  background-color: lightgray;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+`;
+
+const StepContainer = styled.div`
+  width:100%;
+  display: flex;
+  gap: 10px;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const CircleWrapper = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: white;
 
   img {
     width: 100%;
@@ -272,65 +314,16 @@ const PhotoLabel = styled.label`
   }
 `;
 
-const PlusIcon = styled.span`
-  font-size: 50px;
-  color: black;
-`;
-
-
-const GuideGroup = styled.div`
-  width: 100%;
-  max-width: 370px; /* 최대 너비를 370px로 제한 */
-  height: 146px;
-  background-color: lightgray;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px; /* 상하좌우 여백 */
-  margin: 0 auto; /* 중앙 정렬을 위해 좌우 여백 자동 */
-  box-sizing: border-box; /* 패딩 포함한 크기 계산 */
-
-  @media (max-width: 430px) {
-    padding-left: 30px; /* 작은 화면에서도 좌우 30px 패딩 유지 */
-    padding-right: 30px;
-  }
-`;
-
-const StepContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const CircleWrapper = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 2px solid white; /* 흰색 테두리 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  background-color: white; /* 원 내부 배경 흰색 */
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 이미지가 원 내부에 맞춰짐 */
-  }
-`;
-
 const ArrowIcon = styled.span`
   font-size: 30px;
   color: black;
-  margin: 0 28px; /* 원과 원 사이의 거리 */
 `;
-
 
 const SubmitButton = styled.button`
   position: fixed;
   bottom: 86px;
-  width: 370px;
+  width: 100%;
+  max-width: 330px;
   padding: 15px;
   background-color: #f2f2f2;
   color: black;
@@ -347,5 +340,9 @@ const SubmitButton = styled.button`
     background-color: var(--color-main);
     color: white;
     cursor: pointer;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 `;
