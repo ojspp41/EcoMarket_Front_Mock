@@ -8,6 +8,8 @@ import Navbar from "./components/Navbar";
 import LoginPage from "./pages/LoginPage";
 import GlobalStyle from "./css/GlobalStyle";
 import UploadThings from "./pages/UploadThings";
+import UploadList from "./pages/UploadList";
+
 function App() {
   return (
     <>
@@ -18,8 +20,9 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/auction" element={<Auction />} />
+            <Route path="/" element={<Auction />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/uploadlist" element={<UploadList />} />
             <Route path="/upload" element={<UploadThings />} />
           </Routes>
         </div>

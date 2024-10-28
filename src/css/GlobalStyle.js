@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 // css 변수 생성 필요 ( color, font-size, font-weight 등)
 

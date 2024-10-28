@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import mockAuctionData from "../data/mockAuctionData"; // import mock auction data
+import mockUpcomingAuctions from "../data/mockUpcomingAuctions"; // import mock upcoming auctions
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-function UploadThings() {
+function UploadList() {
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [startPrice, setStartPrice] = useState("");
   const [productPhoto, setProductPhoto] = useState(null);
+  const [productInfo, setProductInfo] = useState("");
 
   const navigate = useNavigate();
-
 
   const goToMain = () => {
     navigate("/");
@@ -35,84 +37,11 @@ function UploadThings() {
   return (
     <Container>
       <TitleGroup>
-        <img src="/assets/etcpage/slash.svg" alt="" onClick={goToMain} />
         <h1>상품 등록</h1>
       </TitleGroup>
 
       <Form>
-        <InputGroup>
-          <label>상품명</label>
-          <input
-            type="text"
-            placeholder="경매에 표시될 상품명을 입력해주세요."
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
-            className={productName ? "filled" : ""}
-          />
-        </InputGroup>
-
-        <InputGroup>
-          <label>카테고리 선택</label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className={category ? "filled" : ""}
-          >
-            <option value="" disabled>
-              상품 카테고리 선택
-            </option>
-            <option value="electronics">전자기기</option>
-            <option value="fashion">패션</option>
-            <option value="furniture">가구</option>
-            <option value="other">기타</option>
-          </select>
-        </InputGroup>
-
-        <InputGroup>
-          <label>희망 시작 가격</label>
-          <input
-            type="text"
-            placeholder="경매를 시작할 희망 시작 가격을 입력해주세요."
-            value={startPrice}
-            onChange={(e) => setStartPrice(e.target.value)}
-            className={startPrice ? "filled" : ""}
-          />
-        </InputGroup>
-
-        <InputGroup>
-          <label>상품 사진</label>
-          <span className="subLabel">
-            사진은 최소 한 장부터 최대 세 장까지 가능해요.
-          </span>
-          <PhotoContainer>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handlePhotoChange}
-              style={{ display: "none" }}
-              id="product-photo"
-            />
-            <PhotoLabel htmlFor="product-photo">
-              {productPhoto ? (
-                <img src={productPhoto} alt="Selected product" />
-              ) : (
-                <PlusIcon>+</PlusIcon>
-              )}
-            </PhotoLabel>
-          </PhotoContainer>
-        </InputGroup>
-
-        <InputGroup>
-          <label>상품 설명</label>
-          <textarea
-            placeholder="상품에 대한 부가 설명을 상세히 작성해주세요."
-            value={productInfo}
-            onChange={(e) => setProductInfo(e.target.value)}
-            className={productInfo ? "filled" : ""}
-          />
-        </InputGroup>
-
-        <label>상품 검수 과정</label>
+        <label>상품 등록 과정</label>
         <GuideGroup>
           <StepContainer>
             <CircleWrapper>
@@ -127,36 +56,25 @@ function UploadThings() {
               <img src="url_to_image3" alt="검수 완료" />
             </CircleWrapper>
           </StepContainer>
-        <GuideGroup>
-          <label>상품 검수 과정</label>
-          <div className="guideBlock">
-            <div className="chapter">
-              <img src="aa" alt="시작가 검토" />
-              시작가 검토
-            </div>
-            <div className="chapter">
-              <img src="bb" alt="상품 검토" />
-              상품 검토
-            </div>
-            <div className="chapter">
-              <img src="cc" alt="검수 완료" />
-              검수 완료
-            </div>
-          </div>
         </GuideGroup>
       </Form>
 
-      <SubmitButton
-        className={isFormComplete() ? "active" : ""}
-        onClick={isFormComplete() ? goToUpload : null}
-      >
-        {isFormComplete() ? "상품 등록하기" : "내용을 모두 입력해주세요!"}
+      <SubmitButton>
+        검수 중인 상품 보러가기
+        <img src="/assets/etcpage/slash.svg" alt="" />
       </SubmitButton>
+
+      <label>경매중인 내 상품</label>
+      <div className="upcoming-auction-list">
+        {mockUpcomingAuctions.map((auction) => (
+          <UpcomingAuctionItem auction={auction} key={auction.id} />
+        ))}
+      </div>
     </Container>
   );
 }
 
-export default UploadThings;
+export default UploadList;
 
 // styled-components
 const Container = styled.div`
@@ -241,6 +159,7 @@ const InputGroup = styled.div`
   select {
     height: 51px;
   }
+
   .subLabel {
     margin: 5px 0px 10px 0px;
     font-size: 10px;
@@ -276,7 +195,6 @@ const PlusIcon = styled.span`
   font-size: 50px;
   color: black;
 `;
-
 
 const GuideGroup = styled.div`
   width: 100%;
@@ -326,14 +244,13 @@ const ArrowIcon = styled.span`
   margin: 0 28px; /* 원과 원 사이의 거리 */
 `;
 
-
 const SubmitButton = styled.button`
   position: fixed;
   bottom: 86px;
   width: 370px;
   padding: 15px;
-  background-color: #f2f2f2;
-  color: black;
+  background-color: #000000;
+  color: white;
   border: none;
   border-radius: 10px;
   font-family: "Pretendard";

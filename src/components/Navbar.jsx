@@ -21,7 +21,7 @@ const Navbar = () => {
         />
         <span className="nav-text">등록</span>
       </div>
-      <div className="nav-item" onClick={() => handleClick('경매', '/auction')}>
+      <div className="nav-item" onClick={() => handleClick('경매', '/')}>
         <img
           src={active === '경매' ? '/assets/navicon2active.svg' : '/assets/navicon2.svg'}
           alt="Icon 2"
