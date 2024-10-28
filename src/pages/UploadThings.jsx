@@ -4,12 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 function UploadThings() {
   const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState(""); 
+  const [category, setCategory] = useState("");
   const [startPrice, setStartPrice] = useState("");
-  const [productPhoto, setProductPhoto] = useState(null); 
+  const [productPhoto, setProductPhoto] = useState(null);
   const [productInfo, setProductInfo] = useState("");
 
   const navigate = useNavigate();
+
+  const goToMain = () => {
+    navigate("/");
+  };
 
   const isFormComplete = () => {
     return productName && category && startPrice && productPhoto && productInfo;
@@ -18,7 +22,7 @@ function UploadThings() {
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProductPhoto(URL.createObjectURL(file)); 
+      setProductPhoto(URL.createObjectURL(file));
     }
   };
 
@@ -31,6 +35,7 @@ function UploadThings() {
   return (
     <Container>
       <TitleGroup>
+        <img src="/assets/etcpage/slash.svg" alt="" onClick={goToMain} />
         <h1>상품 등록</h1>
       </TitleGroup>
 
@@ -76,6 +81,9 @@ function UploadThings() {
 
         <InputGroup>
           <label>상품 사진</label>
+          <span className="subLabel">
+            사진은 최소 한 장부터 최대 세 장까지 가능해요.
+          </span>
           <PhotoContainer>
             <input
               type="file"
@@ -104,20 +112,21 @@ function UploadThings() {
           />
         </InputGroup>
 
+        <label>상품 검수 과정</label>
         <GuideGroup>
-        <StepContainer>
+          <StepContainer>
             <CircleWrapper>
-                <img src="url_to_image1" alt="시작가 검토" />
+              <img src="url_to_image1" alt="시작가 검토" />
             </CircleWrapper>
-            <ArrowIcon>{'>'}</ArrowIcon>
+            <ArrowIcon>{">"}</ArrowIcon>
             <CircleWrapper>
-                <img src="url_to_image2" alt="상품 검토" />
+              <img src="url_to_image2" alt="상품 검토" />
             </CircleWrapper>
-                <ArrowIcon>{'>'}</ArrowIcon>
+            <ArrowIcon>{">"}</ArrowIcon>
             <CircleWrapper>
-                <img src="url_to_image3" alt="검수 완료" />
+              <img src="url_to_image3" alt="검수 완료" />
             </CircleWrapper>
-        </StepContainer>
+          </StepContainer>
         </GuideGroup>
       </Form>
 
@@ -125,7 +134,7 @@ function UploadThings() {
         className={isFormComplete() ? "active" : ""}
         onClick={isFormComplete() ? goToUpload : null}
       >
-        {isFormComplete() ? "시작하기" : "내용을 모두 입력해주세요!"}
+        {isFormComplete() ? "상품 등록하기" : "내용을 모두 입력해주세요!"}
       </SubmitButton>
     </Container>
   );
@@ -140,15 +149,24 @@ const Container = styled.div`
   align-items: center;
   padding: 84px 30px 20px 30px;
   font-family: "Pretendard", sans-serif;
-  padding-bottom: 400px; /* 하단에 추가 공간을 확보하여 스크롤 가능하도록 설정 */
+  padding-bottom: 180px; /* 하단에 추가 공간을 확보하여 스크롤 가능하도록 설정 */
 `;
 
 const TitleGroup = styled.div`
   text-align: left;
   width: 100%;
   margin-bottom: 30px;
+  display: flex;
+  justify-content: bottom;
+  img {
+    size: 25px;
+    transform: scaleX(-1);
+    display: inline;
+    margin-right: 10px;
+  }
 
   h1 {
+    display: inline;
     font-size: 25px;
     font-weight: var(--weight-semi-bold);
     margin-bottom: 5px;
@@ -165,6 +183,10 @@ const Form = styled.form`
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  label {
+    font-size: 15px;
+    font-weight: bold;
+  }
 `;
 
 const InputGroup = styled.div`
@@ -203,11 +225,18 @@ const InputGroup = styled.div`
   select {
     height: 51px;
   }
+
+  .subLabel {
+    margin: 5px 0px 10px 0px;
+    font-size: 10px;
+    color: black;
+    text-align: left;
+  }
 `;
 
 const PhotoContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: left;
 `;
 
 const PhotoLabel = styled.label`
@@ -245,13 +274,12 @@ const GuideGroup = styled.div`
   padding: 20px; /* 상하좌우 여백 */
   margin: 0 auto; /* 중앙 정렬을 위해 좌우 여백 자동 */
   box-sizing: border-box; /* 패딩 포함한 크기 계산 */
-  
+
   @media (max-width: 430px) {
     padding-left: 30px; /* 작은 화면에서도 좌우 30px 패딩 유지 */
     padding-right: 30px;
   }
 `;
-
 
 const StepContainer = styled.div`
   display: flex;
