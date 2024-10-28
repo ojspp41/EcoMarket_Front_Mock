@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { SocialLogin } from "../api/SocialLogin";
 
 function LoginPage() {
   const [clicked, setIsClicked] = useState(false);
@@ -10,7 +11,8 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const goToRegister = () => {
-    navigate("/register");
+    const loginUrl = SocialLogin();
+    window.open(loginUrl).then(navigate("/register"));
   };
 
   useEffect(() => {
