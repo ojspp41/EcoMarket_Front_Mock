@@ -18,7 +18,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginPage/>} /> 
             <Route path="/register" element={<Register />} />
-            <Route path="/auction" element={<Auction />} />
+            <Route path="/" element={<Auction />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
           <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
