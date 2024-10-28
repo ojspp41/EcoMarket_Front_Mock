@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import { SocialLogin } from "../api/SocialLogin";
 
 function LoginPage() {
   const [clicked, setIsClicked] = useState(false);
@@ -10,7 +11,8 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const goToRegister = () => {
-      navigate('/register');
+    const loginUrl = SocialLogin();
+    window.open(loginUrl).then(navigate("/register"));
   };
 
   useEffect(() => {
@@ -26,10 +28,10 @@ function LoginPage() {
 
   return (
     <>
-      {/* 스플래시 */} 
+      {/* 스플래시 */}
       {logoing && (
         <SplashContainer
-          className={`second ${fadeOut ? 'fade-out' : ''}`}
+          className={`second ${fadeOut ? "fade-out" : ""}`}
           style={{ zIndex: 999 }}
         >
           <Slogan>
@@ -47,7 +49,8 @@ function LoginPage() {
 
       <Container>
         <Title>
-          물건 등록과 입찰을 위해<br />
+          물건 등록과 입찰을 위해
+          <br />
           로그인해주세요!
         </Title>
 
@@ -58,9 +61,7 @@ function LoginPage() {
 
           {/* GreenBox 수정된 부분 */}
           <GreenBox>
-            <GreenDiv>
-              중고 물품, 그냥 거래만 하세요?
-            </GreenDiv>
+            <GreenDiv>중고 물품, 그냥 거래만 하세요?</GreenDiv>
             <WhiteDiv>
               에코마켓에서는 금액을 올려 <span>경매</span> 거래를 할 수 있어요!
             </WhiteDiv>
@@ -72,7 +73,9 @@ function LoginPage() {
 
         <LoginWrapper>
           <LoginGuide>3초만에 중고 경매 시작하기!</LoginGuide>
-          <KakaoLoginButton onClick={goToRegister}>카카오 로그인</KakaoLoginButton>
+          <KakaoLoginButton onClick={goToRegister}>
+            카카오 로그인
+          </KakaoLoginButton>
         </LoginWrapper>
       </Container>
     </>
@@ -88,8 +91,11 @@ const SplashContainer = styled.div`
   left: 0;
   flex-direction: column;
   justify-content: space-between;
-  width: 430px;
-  height: 932px;
+  min-width: 390px;
+  min-height: 844px;
+  max-width: 430px;
+  max-height: 932px;
+  padding: 0 30px;
   background-color: #1feb58;
   color: white;
   text-align: left;
@@ -137,8 +143,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 430px;
-  height: 932px;
+  padding: 0 30px;
+  min-width: 390px;
+  min-height: 844px;
+  max-width: 430px;
+  max-height: 932px;
   background-color: white;
   text-align: center;
   z-index: 7;
@@ -149,8 +158,8 @@ const Title = styled.div`
   top: 84px;
   left: 43px;
   font-size: 25px;
-  font-weight: bold;
-  width: 247px;
+  font-weight: 600;
+  width: 280px;
   height: 72px;
   display: flex;
   justify-content: center;
@@ -201,7 +210,8 @@ const WhiteDiv = styled.div`
   border: 1px solid var(--color-main);
   color: black;
   border-radius: 20px;
-  font-size: 12px;
+  margin: 0 20px;
+  font-size: 10px;
   width: 290px;
   height: 33px;
   display: flex;
@@ -213,7 +223,6 @@ const WhiteDiv = styled.div`
     padding: 0 3px; /* 양옆에 여백 추가 */
   }
 `;
-
 
 const MainText = styled.p`
   margin-top: 20px;
@@ -230,7 +239,8 @@ const GrayText = styled.p`
 const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 370px;
+  width: 100%;
+  padding: 0 30px;
   position: absolute;
   bottom: 37px;
   gap: 13px;
@@ -246,7 +256,7 @@ const KakaoLoginButton = styled.button`
   height: 60px;
   background-color: #ffe812;
   border: none;
-  font-family:'Pretendard';
+  font-family: "Pretendard";
   border-radius: 30px;
   font-size: 18px;
   font-weight: bold;

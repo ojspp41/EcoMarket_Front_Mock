@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import GetAddress from '../api/getAddress';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import GetAddress from "../api/GetAddress";
 
 function Register() {
   // 각각의 input 상태를 관리하기 위한 state
-  const [name, setName] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [zipcode, setZipcode] = useState('');
-  const [address, setAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
+  const [name, setName] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [address, setAddress] = useState("");
+  const [detailAddress, setDetailAddress] = useState("");
 
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ function Register() {
   // 페이지 이동 함수
   const goToHome = () => {
     if (isFormComplete()) {
-      navigate('/home');
+      navigate("/");
     }
   };
 
@@ -40,7 +40,7 @@ function Register() {
             placeholder="성함을 입력해주세요."
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className={name ? 'filled' : ''}
+            className={name ? "filled" : ""}
           />
         </InputGroup>
 
@@ -51,7 +51,7 @@ function Register() {
             placeholder="닉네임을 입력해주세요."
             value={nickname}
             onChange={(e) => setNickname(e.target.value)}
-            className={nickname ? 'filled' : ''}
+            className={nickname ? "filled" : ""}
           />
         </InputGroup>
 
@@ -61,7 +61,7 @@ function Register() {
             <input
               type="text"
               placeholder="우편번호"
-              className={`zipcode ${zipcode ? 'filled' : ''}`}
+              className={`zipcode ${zipcode ? "filled" : ""}`}
               value={zipcode}
               onChange={(e) => setZipcode(e.target.value)}
             />
@@ -72,23 +72,23 @@ function Register() {
             placeholder="주소"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className={address ? 'filled' : ''}
+            className={address ? "filled" : ""}
           />
           <input
             type="text"
             placeholder="상세주소를 입력해주세요."
             value={detailAddress}
             onChange={(e) => setDetailAddress(e.target.value)}
-            className={detailAddress ? 'filled' : ''}
+            className={detailAddress ? "filled" : ""}
           />
         </AddressGroup>
       </Form>
 
       <SubmitButton
-        className={isFormComplete() ? 'active' : ''}
+        className={isFormComplete() ? "active" : ""}
         onClick={isFormComplete() ? goToHome : null}
       >
-        {isFormComplete() ? '시작하기' : '내용을 모두 입력해주세요!'}
+        {isFormComplete() ? "시작하기" : "내용을 모두 입력해주세요!"}
       </SubmitButton>
     </Container>
   );
@@ -102,7 +102,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 84px 20px 20px 20px;
-  font-family: 'Pretendard', sans-serif;
+  font-family: "Pretendard", sans-serif;
 `;
 
 const TitleGroup = styled.div`
@@ -189,7 +189,7 @@ const AddressGroup = styled.div`
       background-color: black;
       color: white;
       border: none;
-      font-family:"Pretendard";
+      font-family: "Pretendard";
       height: 51px;
       border-radius: 10px;
       font-size: 14px;
@@ -218,15 +218,17 @@ const SubmitButton = styled.button`
   color: black;
   border: none;
   border-radius: 10px;
-  font-family:"Pretendard";
+  font-family: "Pretendard";
   font-size: 20px;
-  font-weight:var(--weight-bold);
+  font-weight: var(--weight-bold);
   cursor: not-allowed;
   margin-top: 30px;
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &.active {
-    background-color: var(--color-main); /* 모든 입력 필드가 채워지면 배경색 변경 */
+    background-color: var(
+      --color-main
+    ); /* 모든 입력 필드가 채워지면 배경색 변경 */
     color: white; /* 모든 입력 필드가 채워지면 글자색 변경 */
     cursor: pointer;
   }
