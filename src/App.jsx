@@ -9,12 +9,14 @@ import LoginPage from "./pages/LoginPage";
 import GlobalStyle from "./css/GlobalStyle";
 import UploadThings from "./pages/UploadThings";
 import UploadList from "./pages/UploadList";
+
 function App() {
   return (
     <>
       <GlobalStyle />
       <Router>
         <div className="App">
+          <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<Register />} />
@@ -23,7 +25,6 @@ function App() {
             <Route path="/uploadlist" element={<UploadList />} />
             <Route path="/upload" element={<UploadThings />} />
           </Routes>
-          <Navbar /> {/* 항상 하단에 고정되는 Navbar */}
         </div>
       </Router>
     </>

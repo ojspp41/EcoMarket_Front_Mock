@@ -7,9 +7,9 @@ function UploadThings() {
   const [category, setCategory] = useState("");
   const [startPrice, setStartPrice] = useState("");
   const [productPhoto, setProductPhoto] = useState(null);
-  const [productInfo, setProductInfo] = useState("");
 
   const navigate = useNavigate();
+
 
   const goToMain = () => {
     navigate("/");
@@ -127,6 +127,22 @@ function UploadThings() {
               <img src="url_to_image3" alt="검수 완료" />
             </CircleWrapper>
           </StepContainer>
+        <GuideGroup>
+          <label>상품 검수 과정</label>
+          <div className="guideBlock">
+            <div className="chapter">
+              <img src="aa" alt="시작가 검토" />
+              시작가 검토
+            </div>
+            <div className="chapter">
+              <img src="bb" alt="상품 검토" />
+              상품 검토
+            </div>
+            <div className="chapter">
+              <img src="cc" alt="검수 완료" />
+              검수 완료
+            </div>
+          </div>
         </GuideGroup>
       </Form>
 
@@ -225,7 +241,6 @@ const InputGroup = styled.div`
   select {
     height: 51px;
   }
-
   .subLabel {
     margin: 5px 0px 10px 0px;
     font-size: 10px;
@@ -261,6 +276,7 @@ const PlusIcon = styled.span`
   font-size: 50px;
   color: black;
 `;
+
 
 const GuideGroup = styled.div`
   width: 100%;
@@ -309,6 +325,7 @@ const ArrowIcon = styled.span`
   color: black;
   margin: 0 28px; /* 원과 원 사이의 거리 */
 `;
+
 
 const SubmitButton = styled.button`
   position: fixed;
