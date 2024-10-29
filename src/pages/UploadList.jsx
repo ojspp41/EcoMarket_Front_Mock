@@ -78,6 +78,8 @@ function UploadList() {
           <SellingItem auction={auction} />
         ))}
       </AuctionItemWrapper>
+
+      <CircleButton>+</CircleButton>
     </Container>
   );
 }
@@ -208,4 +210,21 @@ const SubmitButton = styled.button`
   cursor: not-allowed;
   margin-top: 8px;
   transition: background-color 0.3s ease, color 0.3s ease;
+`;
+
+const CircleButton = styled.button`
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-point1);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
