@@ -9,6 +9,8 @@ import LoginPage from "./pages/LoginPage";
 import GlobalStyle from "./css/GlobalStyle";
 import UploadThings from "./pages/UploadThings";
 import UploadList from "./pages/UploadList";
+import Inspection from "./pages/ Inspection";
+import Search from "./pages/Search";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/uploadlist" element={<UploadList />} />
             <Route path="/upload" element={<UploadThings />} />
+            <Route path="/inspection" element={<Inspection />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </div>
       </Router>

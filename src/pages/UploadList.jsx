@@ -17,6 +17,13 @@ function UploadList() {
   const goToMain = () => {
     navigate("/");
   };
+  const goToUpload = () => {
+    navigate("/upload");
+  };
+
+  const goToInspection = () => {
+    navigate("/inspection");
+  };
 
   const isFormComplete = () => {
     return productName && category && startPrice && productPhoto && productInfo;
@@ -26,12 +33,6 @@ function UploadList() {
     const file = e.target.files[0];
     if (file) {
       setProductPhoto(URL.createObjectURL(file));
-    }
-  };
-
-  const goToUpload = () => {
-    if (isFormComplete()) {
-      navigate("/upload");
     }
   };
 
@@ -46,21 +47,21 @@ function UploadList() {
         <GuideGroup>
           <StepContainer>
             <CircleWrapper>
-              <img src="url_to_image1" alt="시작가 검토" />
+              <img src="url_to_image1" alt="상품 등록" />
             </CircleWrapper>
             <ArrowIcon>{">"}</ArrowIcon>
             <CircleWrapper>
-              <img src="url_to_image2" alt="상품 검토" />
+              <img src="url_to_image2" alt="에코마켓 검수" />
             </CircleWrapper>
             <ArrowIcon>{">"}</ArrowIcon>
             <CircleWrapper>
-              <img src="url_to_image3" alt="검수 완료" />
+              <img src="url_to_image3" alt="경매 시작" />
             </CircleWrapper>
           </StepContainer>
         </GuideGroup>
       </Form>
 
-      <SubmitButton>
+      <SubmitButton onClick={goToInspection}>
         검수 중인 상품 보러가기
         <img src="/assets/etcpage/slash.svg" alt="" />
       </SubmitButton>
@@ -79,7 +80,7 @@ function UploadList() {
         ))}
       </AuctionItemWrapper>
 
-      <CircleButton>+</CircleButton>
+      <CircleButton onClick={goToUpload}>+</CircleButton>
     </Container>
   );
 }
@@ -218,7 +219,7 @@ const CircleButton = styled.button`
   right: 20px;
   width: 50px;
   height: 50px;
-  background-color: var(--color-point1);
+  background-color: var(--color-main);
   border: none;
   border-radius: 50%;
   color: white;

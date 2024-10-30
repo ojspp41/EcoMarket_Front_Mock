@@ -11,12 +11,14 @@ function UploadThings() {
 
   const navigate = useNavigate();
 
-  const goToMain = () => {
-    navigate("/");
-  };
-
   const isFormComplete = () => {
-    return productName && category && startPrice && productPhotos.length > 0 && productInfo;
+    return (
+      productName &&
+      category &&
+      startPrice &&
+      productPhotos.length > 0 &&
+      productInfo
+    );
   };
 
   const handlePhotoChange = (e) => {
@@ -27,16 +29,19 @@ function UploadThings() {
     }
   };
 
+  const goBack = () => {
+    navigate("/uploadlist");
+  };
   const goToUpload = () => {
     if (isFormComplete()) {
-      navigate("/upload");
+      navigate("/uploadlist");
     }
   };
 
   return (
     <Container>
       <TitleGroup>
-        <img src="/assets/etcpage/Vector.svg" alt="" onClick={goToMain} />
+        <img src="/assets/etcpage/Vector.svg" alt="" onClick={goBack} />
         <h1>상품 등록</h1>
       </TitleGroup>
 
@@ -97,7 +102,11 @@ function UploadThings() {
             <PhotoLabel htmlFor="product-photo">
               {productPhotos.length > 0 ? (
                 productPhotos.map((photo, index) => (
-                  <PhotoPreview key={index} src={photo} alt={`Selected product ${index + 1}`} />
+                  <PhotoPreview
+                    key={index}
+                    src={photo}
+                    alt={`Selected product ${index + 1}`}
+                  />
                 ))
               ) : (
                 <PlusIcon>+</PlusIcon>
@@ -122,11 +131,15 @@ function UploadThings() {
             <CircleWrapper>
               <img src="/assets/etcpage/money.svg" alt="시작가 검토" />
             </CircleWrapper>
-            <ArrowIcon><img src="/assets/etcpage/Vector.svg" alt="" /></ArrowIcon>
+            <ArrowIcon>
+              <img src="/assets/etcpage/Vector.svg" alt="" />
+            </ArrowIcon>
             <CircleWrapper>
               <img src="/assets/etcpage/eye.svg" alt="상품 검토" />
             </CircleWrapper>
-            <ArrowIcon><img src="/assets/etcpage/Vector.svg" alt="" /></ArrowIcon>
+            <ArrowIcon>
+              <img src="/assets/etcpage/Vector.svg" alt="" />
+            </ArrowIcon>
             <CircleWrapper>
               <img src="/assets/etcpage/thumb.svg" alt="검수 완료" />
             </CircleWrapper>
@@ -289,7 +302,7 @@ const GuideGroup = styled.div`
 `;
 
 const StepContainer = styled.div`
-  width:100%;
+  width: 100%;
   display: flex;
   gap: 10px;
   justify-content: space-around;
