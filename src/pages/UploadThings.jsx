@@ -127,6 +127,7 @@ function UploadThings() {
               <img src="url_to_image3" alt="검수 완료" />
             </CircleWrapper>
           </StepContainer>
+        </GuideGroup>
         <GuideGroup>
           <label>상품 검수 과정</label>
           <div className="guideBlock">

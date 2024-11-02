@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { SocialLogin } from "../api/SocialLogin";
+// import { SocialLogin } from "../api/SocialLogin";
 
 function LoginPage() {
   const [clicked, setIsClicked] = useState(false);
