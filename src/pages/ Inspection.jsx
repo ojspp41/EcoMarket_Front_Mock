@@ -2,33 +2,12 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import mockUpcomingAuctions from "../data/mockUpcomingAuctions";
+import SellingItem from "../components/SellingItem";
 
 function Inspection() {
-  const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState("");
-  const [startPrice, setStartPrice] = useState("");
-  const [productPhotos, setProductPhotos] = useState([]); // 최대 3장까지 선택 가능
-  const [productInfo, setProductInfo] = useState("");
 
   const navigate = useNavigate();
 
-  const isFormComplete = () => {
-    return (
-      productName &&
-      category &&
-      startPrice &&
-      productPhotos.length > 0 &&
-      productInfo
-    );
-  };
-
-  const handlePhotoChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (files.length > 0 && productPhotos.length + files.length <= 3) {
-      const photoURLs = files.map((file) => URL.createObjectURL(file));
-      setProductPhotos([...productPhotos, ...photoURLs].slice(0, 3)); // 최대 3개까지만 저장
-    }
-  };
 
   const goBack = () => {
     navigate("/uploadlist");

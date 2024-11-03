@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import mockUpcomingAuctions from "../data/mockUpcomingAuctions";
+import SellingItem from "../components/SellingItem";
+import "../css/components/SearchContainer.css";
 
 function Search() {
   const [productName, setProductName] = useState("");
@@ -20,7 +23,7 @@ function Search() {
   };
 
   const goBack = () => {
-    navigate("/uploadlist");
+    navigate("/");
   };
 
   return (
@@ -31,14 +34,12 @@ function Search() {
       </TitleGroup>
 
       <InputGroup>
-        <label>희망 시작 가격</label>
         <input
-          type="text"
-          placeholder="경매를 시작할 희망 시작 가격을 입력해주세요."
-          value={startPrice}
-          onChange={(e) => setStartPrice(e.target.value)}
-          className={startPrice ? "filled" : ""}
+        type="text"
+        className="search-input"
+        placeholder="원하는 물품을 검색해보세요!"
         />
+        <img src="/assets/Search.svg" alt="search" className="search-icon" />
       </InputGroup>
 
       <AuctionItemWrapper>
@@ -65,7 +66,7 @@ const Container = styled.div`
 const TitleGroup = styled.div`
   text-align: left;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: bottom;
   img {
@@ -89,25 +90,25 @@ const TitleGroup = styled.div`
     color: #000000;
   }
 `;
+
 const InputGroup = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-
-  label {
-    font-size: 15px;
-    margin-bottom: 8px;
-    font-weight: bold;
-  }
+  margin-bottom: 20px;
+  position: relative;
 
   input,
   select,
   textarea {
     padding: 12px;
+    padding-right: 40px; /* 아이콘 공간 확보를 위해 오른쪽 패딩 추가 */
     border: 1px solid #e0e0e0;
     border-radius: 10px;
     font-size: 15px;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
+    width: 100%;
 
     &.filled {
       border-color: var(--color-main);
@@ -125,13 +126,24 @@ const InputGroup = styled.div`
   select {
     height: 51px;
   }
+
   .subLabel {
     margin: 2px 0px 10px 0px;
     font-size: 12px;
     color: black;
     text-align: left;
   }
+
+  .search-icon {
+    position: absolute;
+    right: 18px; /* input의 오른쪽에서 18px */
+    top: 50%;
+    transform: translateY(-50%); /* 상하 중앙 정렬 */
+    width: 20px;
+    height: 20px;
+  }
 `;
+
 const AuctionItemWrapper = styled.div`
   display: flex;
   width: 100%;

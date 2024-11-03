@@ -1,3 +1,4 @@
+// SellingItem.js
 import React from "react";
 import "../css/components/SellingItem.css"; // 새로운 CSS 파일 import
 
@@ -11,6 +12,7 @@ const SellingItem = ({ auction }) => {
           <img src="/assets/slash.svg" alt="" className="action-item-slash" />
         </div>
         <h3 className="auction-item-title">{auction.title}</h3>
+        <p className="auction-item-subTitle">{auction.sub}</p> {/* 추가된 부분 */}
         <p className="auction-item-desc">{auction.desc}</p>
         <div className="refresh-icon-container">
           <img

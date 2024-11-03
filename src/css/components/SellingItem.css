@@ -1,31 +1,29 @@
+/* SellingItem.css */
 .auction-item {
   width: 100%;
   display: flex;
   background-color: #ffffff;
-  padding: 15px;
+  padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin-bottom: 20px;
+  height: 104px;
 }
 
 .auction-item-img {
-  width: 100px;
-  height: 100px;
+  width: 84px;
+  height: 84px;
   object-fit: cover;
   margin-right: 20px;
+  border-radius: 4px;
 }
 
 .auction-item-details {
   display: flex;
   flex-direction: column;
-  width: 100%; /* 부모 요소의 너비를 100%로 설정 */
+  width: 100%;
 }
-.auction-item-desc {
-  font-size: 10px;
-  font-family: "Pretendard", sans-serif;
-  font-weight: 300;
-  color: #8b95a1;
-}
+
 .auction-item-category {
   width: 31px;
   height: 16px;
@@ -38,20 +36,35 @@
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
 }
 
 .auction-item-title {
   font-size: 12px;
   font-family: "Pretendard", sans-serif;
   font-weight: bold;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
+}
+
+.auction-item-subTitle {
+  font-size: 10px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: 300;
+  color: #8B95A1;
+}
+
+.auction-item-desc {
+  font-size: 10px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: 300;
+  color: #8b95a1;
 }
 
 .auction-item-info-container {
   display: flex;
   align-items: center;
-  width: 100%; /* 부모 요소의 너비를 100%로 설정 */
+  width: 100%;
+  margin-top: -6px;
 }
 
 .auction-item-people-icon {
@@ -72,17 +85,18 @@
   font-weight: bold;
   margin-left: auto;
 }
+
 .refresh-icon-container {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 1px solid #d3d3d3; /* 약간 흐린 경계선 */
+  border: 1px solid #d3d3d3;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: auto;
-  margin-bottom: 7px;
-  margin-right: 4px;
+  margin-left: auto; /* 오른쪽으로 정렬 */
+  margin-top: -6px; /* 기존 위치보다 2px 위로 이동 */
+  margin-right: 0;
 }
 
 .refresh-icon {
@@ -90,19 +104,16 @@
   height: 14px;
   object-fit: contain;
 }
+
 .first_line {
   display: flex;
   justify-content: space-between;
 }
+
 .action-item-slash {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 6px;
   height: 10px;
-}
-
-.category-item.selected .category-circle {
-  background-color: rgba(43, 222, 93, 0.1); /* 선택 시 백그라운드가 100% */
-  border-color: #2bde5d; /* 선택 시 경계색도 2bde5d */
 }
