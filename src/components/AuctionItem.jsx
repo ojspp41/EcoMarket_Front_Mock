@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../css/components/AuctionItem.css"; // 새로운 CSS 파일 import
 
 const AuctionItem = ({ auction }) => {
   const navigate = useNavigate();
-
+  const [isRotating, setIsRotating] = useState(false);
   const handleIconClick = () => {
     navigate(`/product/${auction.id}`);
   };
-
+  const handleRefreshClick = () => {
+    setIsRotating(true);
+    setTimeout(() => {
+      setIsRotating(false);
+    }, 700); // 0.7초 후 회전 중지
+  };
   return (
     <div className="auction-item">
       <img src={auction.img} alt={auction.title} className="auction-item-img" />
@@ -27,8 +32,12 @@ const AuctionItem = ({ auction }) => {
         </div>
         <h3 className="auction-item-title">{auction.title}</h3>
         <p className="auction-item-desc">{auction.desc}</p>
-        <div className="refresh-icon-container">
-          <img src="/assets/refresh.svg" alt="refresh" className="refresh-icon" />
+        <div className="refresh-icon-container" onClick={handleRefreshClick}>
+          <img 
+            src="/assets/refresh.svg" 
+            alt="refresh" 
+            className={`refresh-icon ${isRotating ? 'rotating' : ''}`} 
+          />
         </div>
         <div className="auction-item-info-container">
           <img src="/assets/people.svg" alt="people icon" className="auction-item-people-icon" />

@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import "./App.css";
+// src/App.js 또는 src/index.js
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import Register from "./pages/Register";
 import Auction from "./pages/Auction";
 import Profile from "./pages/Profile";
@@ -12,7 +15,7 @@ import GlobalStyle from "./css/GlobalStyle";
 import UploadThings from "./pages/UploadThings";
 import UploadList from "./pages/UploadList";
 import { TotalCategory } from "./pages/TotalCategory";
-
+import ProductDetail from "./pages/ProductDetail";
 function App() {
   return (
     <Provider store={store}>
@@ -28,6 +31,7 @@ function App() {
             <Route path="/uploadlist" element={<UploadList />} />
             <Route path="/upload" element={<UploadThings />} />
             <Route path="/category-page" element={<TotalCategory />} />
+            <Route path="/product/:productId" element={<ProductDetail />} />
           </Routes>
         </div>
       </Router>
