@@ -3,6 +3,7 @@ import mockAuctionData from "../data/mockAuctionData"; // import mock auction da
 import mockUpcomingAuctions from "../data/mockUpcomingAuctions"; // import mock upcoming auctions
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import SellingItem from "../components/SellingItem";
 
 function UploadList() {
   const [productName, setProductName] = useState("");
@@ -16,6 +17,13 @@ function UploadList() {
   const goToMain = () => {
     navigate("/");
   };
+  const goToUpload = () => {
+    navigate("/upload");
+  };
+
+  const goToInspection = () => {
+    navigate("/inspection");
+  };
 
   const isFormComplete = () => {
     return productName && category && startPrice && productPhoto && productInfo;
@@ -25,12 +33,6 @@ function UploadList() {
     const file = e.target.files[0];
     if (file) {
       setProductPhoto(URL.createObjectURL(file));
-    }
-  };
-
-  const goToUpload = () => {
-    if (isFormComplete()) {
-      navigate("/upload");
     }
   };
 
@@ -45,31 +47,40 @@ function UploadList() {
         <GuideGroup>
           <StepContainer>
             <CircleWrapper>
-              <img src="url_to_image1" alt="시작가 검토" />
+              <img src="url_to_image1" alt="상품 등록" />
             </CircleWrapper>
             <ArrowIcon>{">"}</ArrowIcon>
             <CircleWrapper>
-              <img src="url_to_image2" alt="상품 검토" />
+              <img src="url_to_image2" alt="에코마켓 검수" />
             </CircleWrapper>
             <ArrowIcon>{">"}</ArrowIcon>
             <CircleWrapper>
-              <img src="url_to_image3" alt="검수 완료" />
+              <img src="url_to_image3" alt="경매 시작" />
             </CircleWrapper>
           </StepContainer>
         </GuideGroup>
       </Form>
 
-      <SubmitButton>
+      <SubmitButton onClick={goToInspection}>
         검수 중인 상품 보러가기
         <img src="/assets/etcpage/slash.svg" alt="" />
       </SubmitButton>
 
-      <label>경매중인 내 상품</label>
-      <div className="upcoming-auction-list">
+      <label className="sectionTitle">경매중인 내 상품</label>
+      <AuctionItemWrapper>
         {mockUpcomingAuctions.map((auction) => (
-          <UpcomingAuctionItem auction={auction} key={auction.id} />
+          <SellingItem auction={auction} />
         ))}
-      </div>
+      </AuctionItemWrapper>
+
+      <label className="sectionTitle two">경매 완료된 내 상품</label>
+      <AuctionItemWrapper>
+        {mockUpcomingAuctions.map((auction) => (
+          <SellingItem auction={auction} />
+        ))}
+      </AuctionItemWrapper>
+
+      <CircleButton onClick={goToUpload}>+</CircleButton>
     </Container>
   );
 }
@@ -78,18 +89,31 @@ export default UploadList;
 
 // styled-components
 const Container = styled.div`
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 84px 30px 20px 30px;
   font-family: "Pretendard", sans-serif;
   padding-bottom: 180px; /* 하단에 추가 공간을 확보하여 스크롤 가능하도록 설정 */
+  .sectionTitle {
+    width: 100%;
+    text-align: left;
+    font-family: "Pretendard";
+    font-size: 17px;
+    font-weight: bold;
+    margin: 36px 0px 20px 0px;
+  }
+  .two {
+    margin-top: 20px !important;
+  }
 `;
 
 const TitleGroup = styled.div`
   text-align: left;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 24px;
   display: flex;
   justify-content: bottom;
   img {
@@ -123,66 +147,37 @@ const Form = styled.form`
   }
 `;
 
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  label {
-    font-size: 15px;
-    margin-bottom: 8px;
-    font-weight: bold;
-  }
-
-  input,
-  select,
-  textarea {
-    padding: 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    font-size: 15px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-
-    &.filled {
-      border-color: var(--color-main);
-    }
-
-    &::placeholder {
-      color: #cccccc;
-    }
-  }
-
-  textarea {
-    height: 220px;
-  }
-
-  select {
-    height: 51px;
-  }
-
-  .subLabel {
-    margin: 5px 0px 10px 0px;
-    font-size: 10px;
-    color: black;
-    text-align: left;
-  }
-`;
-
-const PhotoContainer = styled.div`
-  display: flex;
-  justify-content: left;
-`;
-
-const PhotoLabel = styled.label`
-  width: 110px;
-  height: 110px;
-  background-color: #e0e0e0;
+const GuideGroup = styled.div`
+  width: 100%;
+  max-width: 330px;
+  height: 146px;
+  background-color: lightgray;
   border-radius: 10px;
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+`;
+
+const StepContainer = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: space-around;
+  align-items: center;
+`;
+
+const CircleWrapper = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid white;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
   overflow: hidden;
+  background-color: white;
 
   img {
     width: 100%;
@@ -191,63 +186,20 @@ const PhotoLabel = styled.label`
   }
 `;
 
-const PlusIcon = styled.span`
-  font-size: 50px;
-  color: black;
-`;
-
-const GuideGroup = styled.div`
-  width: 100%;
-  max-width: 370px; /* 최대 너비를 370px로 제한 */
-  height: 146px;
-  background-color: lightgray;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px; /* 상하좌우 여백 */
-  margin: 0 auto; /* 중앙 정렬을 위해 좌우 여백 자동 */
-  box-sizing: border-box; /* 패딩 포함한 크기 계산 */
-
-  @media (max-width: 430px) {
-    padding-left: 30px; /* 작은 화면에서도 좌우 30px 패딩 유지 */
-    padding-right: 30px;
-  }
-`;
-
-const StepContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const CircleWrapper = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 2px solid white; /* 흰색 테두리 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  background-color: white; /* 원 내부 배경 흰색 */
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 이미지가 원 내부에 맞춰짐 */
-  }
-`;
-
 const ArrowIcon = styled.span`
   font-size: 30px;
   color: black;
-  margin: 0 28px; /* 원과 원 사이의 거리 */
+`;
+
+const AuctionItemWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
 `;
 
 const SubmitButton = styled.button`
-  position: fixed;
-  bottom: 86px;
-  width: 370px;
+  width: 100%;
+  max-width: 330px;
   padding: 15px;
   background-color: #000000;
   color: white;
@@ -257,12 +209,23 @@ const SubmitButton = styled.button`
   font-size: 20px;
   font-weight: var(--weight-bold);
   cursor: not-allowed;
-  margin-top: 30px;
+  margin-top: 8px;
   transition: background-color 0.3s ease, color 0.3s ease;
+`;
 
-  &.active {
-    background-color: var(--color-main);
-    color: white;
-    cursor: pointer;
-  }
+const CircleButton = styled.button`
+  position: fixed;
+  bottom: 120px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-color: var(--color-main);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 `;
