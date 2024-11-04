@@ -1,0 +1,119 @@
+/* SellingItem.css */
+.auction-item {
+  width: 100%;
+  display: flex;
+  background-color: #ffffff;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  height: 104px;
+}
+
+.auction-item-img {
+  width: 84px;
+  height: 84px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 4px;
+}
+
+.auction-item-details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.auction-item-category {
+  width: 31px;
+  height: 16px;
+  background-color: #1feb5913;
+  color: #2bde5d;
+  font-size: 10px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.auction-item-title {
+  font-size: 12px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.auction-item-subTitle {
+  font-size: 10px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: 300;
+  color: #8B95A1;
+}
+
+.auction-item-desc {
+  font-size: 10px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: 300;
+  color: #8b95a1;
+}
+
+.auction-item-info-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: -6px;
+}
+
+.auction-item-people-icon {
+  width: 11px;
+  height: 11px;
+  margin-right: 3px;
+}
+
+.auction-item-info {
+  font-size: 10px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: 500;
+}
+
+.auction-item-price {
+  font-size: 15px;
+  font-family: "Pretendard", sans-serif;
+  font-weight: bold;
+  margin-left: auto;
+}
+
+.refresh-icon-container {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #d3d3d3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto; /* 오른쪽으로 정렬 */
+  margin-top: -6px; /* 기존 위치보다 2px 위로 이동 */
+  margin-right: 0;
+}
+
+.refresh-icon {
+  width: 14px;
+  height: 14px;
+  object-fit: contain;
+}
+
+.first_line {
+  display: flex;
+  justify-content: space-between;
+}
+
+.action-item-slash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6px;
+  height: 10px;
+}

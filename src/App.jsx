@@ -16,6 +16,8 @@ import UploadThings from "./pages/UploadThings";
 import UploadList from "./pages/UploadList";
 import { TotalCategory } from "./pages/TotalCategory";
 import ProductDetail from "./pages/ProductDetail";
+import Inspection from "./pages/ Inspection";
+import Search from "./pages/Search";
 function App() {
   return (
     <Provider store={store}>
@@ -32,6 +34,8 @@ function App() {
             <Route path="/upload" element={<UploadThings />} />
             <Route path="/category-page" element={<TotalCategory />} />
             <Route path="/product/:productId" element={<ProductDetail />} />
+            <Route path="/inspection" element={<Inspection />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </div>
       </Router>
