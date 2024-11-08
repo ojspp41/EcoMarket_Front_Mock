@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategory } from '../redux/categorySlice';
+import { setCategory, setAuctions }from '../redux/categorySlice';
 import SearchBar from '../components/SearchContainer';
 import "../css/pages/Auction.css";
 import auchor_categories from '../data/auchor_categories';
@@ -9,13 +9,32 @@ import UpcomingAuctionItem from '../components/UpcomingAuctionItem';
 import { useNavigate } from 'react-router-dom';
 import mockAuctionData from '../data/mockAuctionData';
 import mockUpcomingAuctions from '../data/mockUpcomingAuctions';
+import instance from '../axiosConfig';
 
 const Auction = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
   // Redux 스토어에서 선택된 카테고리 가져오기
   const selectedCategory = useSelector((state) => state.category);
+  const auctions = useSelector((state) => state.auctions) || [];
+  useEffect(() => {
+    if (selectedCategory) {
+      fetchAuctions(selectedCategory);
+    }
+  }, [selectedCategory]);
+  const fetchAuctions = async (category) => {
+    try {
+      const response = await instance.get('/auctions', {
+        params: {
+          status: 'ONGOING',
+          category
+        }
+      });
+      dispatch(setAuctions(response.data)); // 데이터를 Redux에 저장
+    } catch (error) {
+      console.error("경매 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
 
   const navigateToCategoryPage = () => {
     navigate('/category-page');
@@ -82,9 +101,13 @@ const Auction = () => {
             <span className="view-all-text" onClick={navigateToCategoryPage}>전체보기</span>
           </div>
           <div className="auction-list">
-            {filteredAuctions.map((auction) => (
-              <AuctionItem auction={auction} key={auction.id} /> 
-            ))}
+            {auctions.length > 0 ? (
+              auctions.map((auction) => (
+                <AuctionItem auction={auction} key={auction.productId} /> 
+              ))
+            ) : (
+              <p>현재 진행 중인 경매가 없습니다.</p>
+            )}
           </div>
         </div>
 

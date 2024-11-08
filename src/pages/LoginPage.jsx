@@ -11,10 +11,10 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const goToRegister = () => {
-    const loginUrl = SocialLogin();
-    window.open(loginUrl).then(navigate("/register"));
+    window.location.href =
+      "https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26client_id%3D145df1eee2cf7309ed26098ab678c77c%26redirect_uri%3Dhttp%253A%252F%252F15.165.136.72%253A8080%252Foauth2%252Fkakao%252Fcode%26through_account%3Dtrue#login";
+    // alert("서비스 종료 ㅠㅠㅠㅠ");
   };
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setFadeOut(true); // fade-out 시작
