@@ -19,6 +19,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Inspection from "./pages/Inspection";
 import Search from "./pages/Search";
 import UpcomingDetail from "./pages/UpcomingDetail";
+import DoneDetail from "./pages/DoneDetail";
 function App() {
   return (
     <Provider store={store}>
@@ -36,6 +37,7 @@ function App() {
             <Route path="/category-page" element={<TotalCategory />} />
             <Route path="/product/:productId" element={<ProductDetail />} />
             <Route path="/upcoming/:productId" element={<UpcomingDetail />} />
+            <Route path="/done/:productId" element={<DoneDetail/>} />
             <Route path="/inspection" element={<Inspection />} />
             <Route path="/search" element={<Search />} />
           </Routes>
