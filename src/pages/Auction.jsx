@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategory, setAuctions }from '../redux/categorySlice';
 import SearchBar from '../components/SearchContainer';
@@ -10,32 +10,77 @@ import { useNavigate } from 'react-router-dom';
 import mockAuctionData from '../data/mockAuctionData';
 import mockUpcomingAuctions from '../data/mockUpcomingAuctions';
 import instance from '../axiosConfig';
-
+import Cookies from 'js-cookie';
 const Auction = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // Redux 스토어에서 선택된 카테고리 가져오기
   const selectedCategory = useSelector((state) => state.category);
   const auctions = useSelector((state) => state.auctions) || [];
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // 로그인 상태 관리
+  const categoryMapping = {
+    "그림": "PAINTING",
+    "음반": "RECORD",
+    "악기": "INSTRUMENT",
+    "신발": "SHOES",
+    "의류": "CLOTHING",
+    "전자": "ELECTRONICS",
+    "주얼리": "JEWELRY",
+    "가방": "BAGS",
+    "계절템": "SEASONAL_ITEMS",
+    "한정판": "LIMITED_EDITION"
+  };
+
+  //login확인 코드
   useEffect(() => {
-    if (selectedCategory) {
-      fetchAuctions(selectedCategory);
+    const urlParams = new URLSearchParams(window.location.search);
+    const accessToken = urlParams.get("accessToken") || Cookies.get("accessToken");
+    const refreshToken = urlParams.get("refreshToken") || Cookies.get("refreshToken");
+
+    if (accessToken && refreshToken) {
+      // Store tokens in cookies if they are from the URL
+      if (urlParams.get("accessToken") && urlParams.get("refreshToken")) {
+        Cookies.set("accessToken", accessToken, { path: "/" });
+        Cookies.set("refreshToken", refreshToken, { path: "/" });
+      }
+      setIsAuthenticated(true); // 로그인 성공 상태 업데이트
+      // Redirect to the home page
+      navigate("/");
+    } else {
+      // Redirect to login if tokens are missing
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    
+    if (isAuthenticated ) {
+      fetchAuctions(selectedCategory.selectedCategory);
     }
   }, [selectedCategory]);
+  
   const fetchAuctions = async (category) => {
     try {
-      const response = await instance.get('/auctions', {
+      const mappedCategory = categoryMapping[category];// 영어로 변환하거나, 변환되지 않으면 원래 카테고리 사용
+      // 보낼 데이터와 URL을 콘솔에 출력
+    console.log("보내는 데이터:", {
+      status: "ONGOING",
+      category: mappedCategory
+    });
+    console.log("요청 URL:", `/auctions?status=ONGOING&category=${mappedCategory}`);
+      const response = await instance.get(`/auctions`, {
         params: {
-          status: 'ONGOING',
-          category
+          status: "ONGOING",
+          category: mappedCategory
         }
       });
-      dispatch(setAuctions(response.data)); // 데이터를 Redux에 저장
+      dispatch(setAuctions(response.data)); // Redux에 데이터 저장
     } catch (error) {
       console.error("경매 데이터를 가져오는 중 오류 발생:", error);
     }
   };
 
+  
   const navigateToCategoryPage = () => {
     navigate('/category-page');
   };
