@@ -62,7 +62,7 @@ instance.interceptors.response.use(
     if (!error.response) {
       // 서버 응답이 없을 때 (네트워크 에러 등)
       console.error("Network error or server is down");
-      alert("서버에 연결할 수 없습니다. 다시 시도해 주세요.사벌");
+      alert("서버에 연결할 수 없습니다. 다시 시도해 주세요.");
       return Promise.reject(error);
     }
 
