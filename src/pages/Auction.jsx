@@ -11,13 +11,13 @@ import mockAuctionData from '../data/mockAuctionData';
 import mockUpcomingAuctions from '../data/mockUpcomingAuctions';
 import instance from '../axiosConfig';
 import Cookies from 'js-cookie';
+import axios from "axios";
 const Auction = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // Redux 스토어에서 선택된 카테고리 가져오기
   const selectedCategory = useSelector((state) => state.category);
   const auctions = useSelector((state) => state.auctions) || [];
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // 로그인 상태 관리
   const categoryMapping = {
     "그림": "PAINTING",
     "음반": "RECORD",
@@ -43,7 +43,7 @@ const Auction = () => {
         Cookies.set("accessToken", accessToken, { path: "/" });
         Cookies.set("refreshToken", refreshToken, { path: "/" });
       }
-      setIsAuthenticated(true); // 로그인 성공 상태 업데이트
+      
       // Redirect to the home page
       navigate("/");
     } else {
@@ -53,12 +53,19 @@ const Auction = () => {
   }, [navigate]);
 
   useEffect(() => {
-    
-    if (isAuthenticated ) {
+    // 인증된 상태일 때만 경매 데이터를 가져오는 함수 호출
+    if (selectedCategory) {
       fetchAuctions(selectedCategory.selectedCategory);
     }
-  }, [selectedCategory]);
+  }, [selectedCategory.selectedCategory]);
   
+  
+  // 토큰 없이 사용할 Axios 인스턴스
+  const publicInstance = axios.create({
+    baseURL: "https://ecomarket-cuk.shop",
+  });
+
+
   const fetchAuctions = async (category) => {
     try {
       const mappedCategory = categoryMapping[category];// 영어로 변환하거나, 변환되지 않으면 원래 카테고리 사용
@@ -68,18 +75,18 @@ const Auction = () => {
       category: mappedCategory
     });
     console.log("요청 URL:", `/auctions?status=ONGOING&category=${mappedCategory}`);
-      const response = await instance.get(`/auctions`, {
+      const response = await publicInstance.get(`/auctions`, {
         params: {
           status: "ONGOING",
           category: mappedCategory
         }
       });
-      dispatch(setAuctions(response.data)); // Redux에 데이터 저장
+      dispatch(setAuctions(response.data.result)); // Redux에 데이터 저장
+      console.log("Updated Auctions:", auctions.auctions);
     } catch (error) {
       console.error("경매 데이터를 가져오는 중 오류 발생:", error);
     }
   };
-
   
   const navigateToCategoryPage = () => {
     navigate('/category-page');
@@ -89,9 +96,9 @@ const Auction = () => {
   const filteredAuctions = mockAuctionData.filter(
     auction => auction.category === selectedCategory
   );
-
   const handleCategoryClick = (category) => { 
     dispatch(setCategory(category)); // Redux 스토어의 선택된 카테고리 업데이트
+    console.log("category",category);
   };
   
   return (
@@ -126,11 +133,11 @@ const Auction = () => {
           <div className="category-grid">
             {auchor_categories.map((category) => (
               <div
-                className={`category-item ${selectedCategory === category.title ? 'selected' : ''}`}
+                className="category-item" 
                 key={category.title}
                 onClick={() => handleCategoryClick(category.title)} // 카테고리 선택 시 호출
               >
-                <div className="category-circle">
+                <div className={`category-circle ${selectedCategory.selectedCategory === category.title ? 'selected' : ''}`}>
                   <img src={category.img} alt={category.title} />
                 </div>
                 <p className="category-label">{category.title}</p>
