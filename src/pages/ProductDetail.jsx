@@ -6,7 +6,7 @@ import SellerInfo from '../components/Detail/SellerInfo';
 import BidInfo from '../components/Detail/BidInfo';
 import TransactionChart from '../components/Detail/TransactionChart';
 import "../css/pages/ProductDetail.css";
-
+import AuctionModal from '../components/Modal/AuctionModal.jsx';
 
 const mockProductData = {
   productId: 1,
@@ -44,12 +44,20 @@ const mockProductData = {
 const ProductDetail = () => {
   const product = mockProductData;
   const [isRotating, setIsRotating] = useState(false);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const handleRefreshClick = () => {
     setIsRotating(true);
     setTimeout(() => {
       setIsRotating(false);
     }, 700); // 0.7초 후에 애니메이션을 중지
+  };
+  
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
   return (
     <div className="detail-product-detail-container">
@@ -70,7 +78,8 @@ const ProductDetail = () => {
           />
         </div>
       </div>
-      <button className="fixed-button">경매입장하기</button>
+      <button className="fixed-button" onClick={handleOpenModal}>경매입장하기</button>
+      {isModalOpen && <AuctionModal onClose={handleCloseModal} productId={product.productId} />}
       <div className="show"></div>
     </div>
   );
