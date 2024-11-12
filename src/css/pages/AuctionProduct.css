@@ -1,0 +1,50 @@
+.margingray {
+  margin-top: 20px;
+}
+/* AuctionProduct.css */
+
+/* 큰 컨테이너 */
+.auction-container {
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9; /* 배경 색 추가 */
+}
+
+/* Next Bid Price Section */
+.next-bid-price {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.next-bid-price .price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-left: 10px;
+}
+
+/* Bid Note Section */
+.bid-note {
+  background-color: rgba(255, 192, 203, 0.2);
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.bid-note ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+.bid-note li {
+  margin-bottom: 5px;
+}

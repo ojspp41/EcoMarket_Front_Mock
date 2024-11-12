@@ -7,7 +7,7 @@ import auchor_categories from '../data/auchor_categories';
 import AuctionItem from '../components/AuctionItem';
 import UpcomingAuctionItem from '../components/UpcomingAuctionItem';
 import { useNavigate } from 'react-router-dom';
-import mockAuctionData from '../data/mockAuctionData';
+
 import mockUpcomingAuctions from '../data/mockUpcomingAuctions';
 import instance from '../axiosConfig';
 import Cookies from 'js-cookie';
@@ -17,7 +17,7 @@ const Auction = () => {
   const dispatch = useDispatch();
   // Redux 스토어에서 선택된 카테고리 가져오기
   const selectedCategory = useSelector((state) => state.category);
-  const auctions = useSelector((state) => state.auctions) || [];
+  const auctions = useSelector((state) => state.category.auctions) || [];
   const categoryMapping = {
     "그림": "PAINTING",
     "음반": "RECORD",
@@ -30,7 +30,7 @@ const Auction = () => {
     "계절템": "SEASONAL_ITEMS",
     "한정판": "LIMITED_EDITION"
   };
-
+  const [upcomingAuctions, setUpcomingAuctions] = useState([]);
   //login확인 코드
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -65,24 +65,35 @@ const Auction = () => {
     baseURL: "https://ecomarket-cuk.shop",
   });
 
-
+  useEffect(() => {
+    fetchUpcomingAuctions();
+  }, []);
+  const fetchUpcomingAuctions = async () => {
+    try {
+      const response = await publicInstance.get(`/auctions`, {
+        params: {
+          status: "UPCOMING"
+        }
+      });
+      setUpcomingAuctions(response.data.result);
+    } catch (error) {
+      console.error("진행 예정 경매 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
   const fetchAuctions = async (category) => {
     try {
       const mappedCategory = categoryMapping[category];// 영어로 변환하거나, 변환되지 않으면 원래 카테고리 사용
       // 보낼 데이터와 URL을 콘솔에 출력
-    console.log("보내는 데이터:", {
-      status: "ONGOING",
-      category: mappedCategory
-    });
-    console.log("요청 URL:", `/auctions?status=ONGOING&category=${mappedCategory}`);
+    
+    
       const response = await publicInstance.get(`/auctions`, {
         params: {
           status: "ONGOING",
           category: mappedCategory
         }
       });
-      dispatch(setAuctions(response.data.result)); // Redux에 데이터 저장
-      console.log("Updated Auctions:", auctions.auctions);
+      dispatch(setAuctions(response.data.result));
+      console.log(auctions);
     } catch (error) {
       console.error("경매 데이터를 가져오는 중 오류 발생:", error);
     }
@@ -92,13 +103,9 @@ const Auction = () => {
     navigate('/category-page');
   };
   
-  // 선택된 카테고리에 따라 mockAuctionData 필터링
-  const filteredAuctions = mockAuctionData.filter(
-    auction => auction.category === selectedCategory
-  );
+  
   const handleCategoryClick = (category) => { 
     dispatch(setCategory(category)); // Redux 스토어의 선택된 카테고리 업데이트
-    console.log("category",category);
   };
   
   return (
@@ -158,7 +165,9 @@ const Auction = () => {
                 <AuctionItem auction={auction} key={auction.productId} /> 
               ))
             ) : (
-              <p>현재 진행 중인 경매가 없습니다.</p>
+              <p style={{ margin: '30px 0', fontWeight: 'bold', fontSize: '16px' }}>
+                현재 진행 중인 경매가 없습니다.
+              </p>
             )}
           </div>
         </div>
@@ -168,9 +177,15 @@ const Auction = () => {
           <h2 className="recent-auctions-title">진행 예정 경매</h2>
           <p className="upcoming-auctions-message">오픈을 앞둔 경매를 미리 둘러보세요!</p>
           <div className="upcoming-auction-list">
-              {mockUpcomingAuctions.map((auction) => (
-                <UpcomingAuctionItem auction={auction} key={auction.id} />
-              ))}
+            {upcomingAuctions.length > 0 ? (
+                  upcomingAuctions.map((auction) => (
+                    <UpcomingAuctionItem auction={auction} key={auction.id} />
+                  ))
+                ) : (
+                  <p style={{ margin: '30px 0', fontWeight: 'bold', fontSize: '16px' }}>
+                    진행 예정인 경매가 없습니다.
+                  </p>
+                )}
           </div>
         </div>
         <div style={{ marginBottom: '150px' }}></div>
