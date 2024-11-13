@@ -11,27 +11,33 @@
   background-color: #f9f9f9; /* 배경 색 추가 */
 }
 
-/* Next Bid Price Section */
 .next-bid-price {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
-  font-size: 14px;
+}
+
+.next-bid-price .label {
+  font-size: 18px;
   font-weight: bold;
+  text-align: left;
   color: #333;
 }
 
 .next-bid-price .price {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
+  text-align: right;
   color: #333;
-  margin-left: 10px;
+  margin-left: auto;
+  border-bottom: 2px solid #333; /* 밑줄 추가 */
+  padding-bottom: 2px; /* 밑줄과 텍스트 간격 조정 */
 }
 
 /* Bid Note Section */
 .bid-note {
   background-color: rgba(255, 192, 203, 0.2);
-  padding: 10px;
+  padding: 7px;
   border-radius: 8px;
   margin-top: 10px;
   font-size: 12px;

@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
-
-import SearchBar from '../components/SearchContainer';
-import "../css/pages/Auction.css";
-import auchor_categories from '../data/auchor_categories';
-import AuctionItem from '../components/AuctionItem';
-import UpcomingAuctionItem from '../components/UpcomingAuctionItem';
-import mockUpcomingAuctions from '../data/mockUpcomingAuctions';
+import React, { useEffect, useState } from "react";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+import Cookies from "js-cookie"; // js-cookie 라이브러리 가져오기
+import { useNavigate, useParams } from "react-router-dom";
 import AuctionCard from "../components/AuctionCard";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -65,7 +62,7 @@ const AuctionProduct = () => {
       <div className="margingray"></div>
       <div className="auction-container">
         <div className="next-bid-price">
-          <span>다음 입찰 가격</span>
+          <span className="label">다음 입찰 가격</span>
           <span className="price">{mockAuctionItems[0].nextBidPrice.toLocaleString()}원</span>
         </div>
         <div className="bid-note">
@@ -76,6 +73,7 @@ const AuctionProduct = () => {
           </ul>
         </div>
       </div>
+      <BidButton>{mockAuctionItems[0].nextBidPrice.toLocaleString()}원에 입찰하기</BidButton>
     </div>
   );
 };
@@ -110,4 +108,20 @@ const TitleGroup = styled.div`
     font-size: 15px;
     color: #000000;
   }
+`;
+
+const BidButton = styled.button`
+  width: 90%;
+  height: 60px;
+  margin: 20px auto;
+  display: block;
+  background-color: #1b1b1b;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom:100px;
 `;
