@@ -1,5 +1,6 @@
 /* AuctionModal.css */
 .modal-overlay {
+  width: calc(100% - 23px);
   position: fixed;
   top: 0;
   left: 0;

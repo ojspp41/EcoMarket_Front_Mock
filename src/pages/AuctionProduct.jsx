@@ -4,7 +4,6 @@ import Stomp from "stompjs";
 import Cookies from "js-cookie"; // js-cookie 라이브러리 가져오기
 import { useNavigate, useParams } from "react-router-dom";
 import AuctionCard from "../components/AuctionCard";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "../css/pages/AuctionProduct.css";
 import BidInfo from "../components/Detail/BidInfo";
