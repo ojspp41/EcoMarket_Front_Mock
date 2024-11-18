@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { screening } from "../api/screening";
+import instance from '../axiosConfig';
+import Cookies from "js-cookie";
+import axios from "axios";
 
-function UploadThings() {
+function UploadThings() { // 상위 컴포넌트로 전달할 onSubmit prop
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("");
   const [startPrice, setStartPrice] = useState("");
@@ -24,19 +28,60 @@ function UploadThings() {
   const handlePhotoChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0 && productPhotos.length + files.length <= 3) {
-      const photoURLs = files.map((file) => URL.createObjectURL(file));
-      setProductPhotos([...productPhotos, ...photoURLs].slice(0, 3)); // 최대 3개까지만 저장
+      setProductPhotos([...productPhotos, ...files].slice(0, 3)); // 최대 3개까지만 저장
     }
   };
 
   const goBack = () => {
     navigate("/uploadlist");
   };
+
   const goToUpload = () => {
     if (isFormComplete()) {
-      navigate("/uploadlist");
+      // 사진을 제외한 데이터를 합쳐 dto 객체 생성
+      const dto = {
+        productName,
+        productDescription: productInfo,
+        desiredStartPrice: parseInt(startPrice), // 숫자 형식으로 변환
+        startTime: "2024-11-01 12:00:00", // 고정된 값
+        endTime: "2024-11-01 12:00:00",   // 고정된 값
+        auctionCategory: "CLOTHING" // 선택된 카테고리 값, 기본값 "CLOTHING"
+      };
+      console.log(dto);
+      // 상위 컴포넌트로 dto와 image(=productPhotos) 전달
+      fetchUpload(dto, productPhotos);
     }
   };
+
+  const fetchUpload = async (dto, productPhotos) => {
+    try {
+      const accessToken = Cookies.get("accessToken");
+      console.log(accessToken);
+      const formData = new FormData();
+      
+      // DTO 객체를 JSON 문자열로 변환하여 FormData에 추가
+      formData.append("screeningDto", new Blob([JSON.stringify(dto)], { type: "application/json" }));
+    
+      // 이미지 파일을 FormData에 추가
+      productPhotos.forEach((photo) => {
+        formData.append("images", photo);
+      });
+    
+      const response = await axios.post(`https://ecomarket-cuk.shop/screenings`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization": `Bearer ${accessToken}` // accessToken을 헤더에 추가
+        },
+      });
+    
+      console.log(response);
+      // dispatch(setAuctions(response.data)); // Redux에 데이터 저장
+    } catch (error) {
+      console.error("경매 데이터를 가져오는 중 오류 발생:", error);
+    }
+  };
+  
+  
 
   return (
     <Container>
@@ -97,14 +142,14 @@ function UploadThings() {
               onChange={handlePhotoChange}
               style={{ display: "none" }}
               id="product-photo"
-              multiple // 여러 사진 선택 가능하게 설정
+              multiple
             />
             <PhotoLabel htmlFor="product-photo">
               {productPhotos.length > 0 ? (
                 productPhotos.map((photo, index) => (
                   <PhotoPreview
                     key={index}
-                    src={photo}
+                    src={URL.createObjectURL(photo)} // 미리보기를 위한 URL 생성
                     alt={`Selected product ${index + 1}`}
                   />
                 ))
@@ -124,27 +169,6 @@ function UploadThings() {
             className={productInfo ? "filled" : ""}
           />
         </InputGroup>
-
-        <label>상품 검수 과정</label>
-        <GuideGroup>
-          <StepContainer>
-            <CircleWrapper>
-              <img src="/assets/etcpage/money.svg" alt="시작가 검토" />
-            </CircleWrapper>
-            <ArrowIcon>
-              <img src="/assets/etcpage/Vector.svg" alt="" />
-            </ArrowIcon>
-            <CircleWrapper>
-              <img src="/assets/etcpage/eye.svg" alt="상품 검토" />
-            </CircleWrapper>
-            <ArrowIcon>
-              <img src="/assets/etcpage/Vector.svg" alt="" />
-            </ArrowIcon>
-            <CircleWrapper>
-              <img src="/assets/etcpage/thumb.svg" alt="검수 완료" />
-            </CircleWrapper>
-          </StepContainer>
-        </GuideGroup>
       </Form>
 
       <SubmitButton
@@ -159,6 +183,7 @@ function UploadThings() {
 }
 
 export default UploadThings;
+
 
 // styled-components
 const Container = styled.div`
