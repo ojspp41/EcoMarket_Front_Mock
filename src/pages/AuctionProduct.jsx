@@ -84,14 +84,8 @@ const AuctionProduct = () => {
             topBidPrice: data.topBidPrice,
             canBidPrice: data.canBidPrice,
             numOfBidders: data.numOfBidders,
-            bidVolumeResponseList: [
-               // 기존 거래량 데이터 추가
-              data.bidVolumeResponse,
-            ],
-            top3BidDatePriceList: [
-              // 기존 입찰 기록 추가
-              data.bidDatePriceResponse,
-            ],
+            bidVolumeResponseList: data.bidVolumeResponseList, // 배열을 그대로 사용
+            top3BidDatePriceList: data.top3BidDatePriceList, // 배열을 그대로 사용
           }));
         });
       },

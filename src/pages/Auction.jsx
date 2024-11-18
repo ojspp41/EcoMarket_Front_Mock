@@ -37,9 +37,9 @@ const Auction = () => {
     const accessToken = urlParams.get("accessToken") || Cookies.get("accessToken");
     const refreshToken = urlParams.get("refreshToken") || Cookies.get("refreshToken");
 
-    if (accessToken && refreshToken) {
+    if (accessToken ) {
       // Store tokens in cookies if they are from the URL
-      if (urlParams.get("accessToken") && urlParams.get("refreshToken")) {
+      if (urlParams.get("accessToken") ) {
         Cookies.set("accessToken", accessToken, { path: "/" });
         Cookies.set("refreshToken", refreshToken, { path: "/" });
       }
