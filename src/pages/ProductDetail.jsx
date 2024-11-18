@@ -22,6 +22,19 @@ const ProductDetail = () => {
   const [isRotating, setIsRotating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const categoryMap = {
+    PAINTING: '그림',
+    RECORD: '음반',
+    INSTRUMENT: '악기',
+    SHOES: '신발',
+    CLOTHING: '의류',
+    ELECTRONICS: '전자',
+    JEWELRY: '주얼리',
+    BAGS: '가방',
+    SEASONAL_ITEMS: '계절템',
+    LIMITED_EDITION: '한정판',
+  };
+  const getKoreanCategory = (englishCategory) => categoryMap[englishCategory] || englishCategory;
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -31,20 +44,27 @@ const ProductDetail = () => {
           navigate('/login');
           return;
         }
-
+  
         const response = await apiClient.get(`/products/ongoing/${productId}`, {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
         });
         console.log(response);
-        setProduct(response.data);
+        
+        // memberId 쿠키에 저장
+        const memberId = response.data.result.memberId;
+        if (memberId) {
+          Cookies.set('memberId', memberId, { expires: 1 }); // 1일 동안 쿠키 유효
+        }
+        console.log(response.data);
+        setProduct(response.data.result);
         
       } catch (error) {
         console.error('Error fetching product details:', error);
       }
     };
-
+  
     fetchProductDetails();
   }, [productId, navigate]);
 
@@ -75,8 +95,16 @@ const ProductDetail = () => {
 
   return (
     <div className="detail-product-detail-container">
-    <Navbar category={product.auctionCategory} />
-    <ImageSlider imageUrls={product.images} productName={product.productName} />
+    <Navbar category={getKoreanCategory(product.auctionCategory)} />
+    {/* <ImageSlider imageUrls={product.images} productName={product.productName} /> */}
+    <ImageSlider 
+      imageUrls={
+        product.images && product.images.length > 0 
+          ? product.images 
+          : ["/assets/picture1.svg", "/assets/picture2.svg", "/assets/picture3.svg"] // 기본 이미지
+      } 
+      productName={product.productName} 
+    />
     <ProductInfo productName={product.productName} productDescription={product.productDescription} />
     <SellerInfo
       sellerName={product.sellerNickname}

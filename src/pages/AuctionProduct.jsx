@@ -1,78 +1,97 @@
 import React, { useEffect, useState } from "react";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import Cookies from "js-cookie"; // js-cookie 라이브러리 가져오기
+import Cookies from "js-cookie";
 import { useNavigate, useParams } from "react-router-dom";
 import AuctionCard from "../components/AuctionCard";
 import styled from "styled-components";
 import "../css/pages/AuctionProduct.css";
 import BidInfo from "../components/Detail/BidInfo";
 import TransactionChart from "../components/Detail/TransactionChart";
+
 const AuctionProduct = () => {
   const navigate = useNavigate();
+  const { auctionId } = useParams();
+  const [auctionData, setAuctionData] = useState(null);
 
-  const mockAuctionItems = [
-    {
-      productId: 1,
-      productName: "모자",
-      productDescription: "모자에 대한 설명입니다.",
-      startPrice: "10,000",
-      imageUrl: "/assets/picture1.svg",
-      auctionCategory: "CLOTHING",
-      currentPrice: 50000000,
-      nextBidPrice: 39930000, // Added next bid price
-      currentBidders: 1234,
-      transactionVolume: [
-        { date: "10/20", volume: 10 },
-        { date: "10/21", volume: 18 },
-        { date: "10/22", volume: 13 },
-        { date: "10/23", volume: 21 },
-        { date: "10/24", volume: 8 },
-        { date: "10/25", volume: 17 },
-        { date: "10/26", volume: 5 },
-        { date: "10/27", volume: 15 },
-        { date: "10/28", volume: 9 },
-      ],
-      bidHistory: [
-        { date: "10/28", time: "18:00", amount: 30000000 },
-        { date: "10/28", time: "18:01", amount: 33000000 },
-        { date: "10/28", time: "18:02", amount: 36300000 },
-      ]
+  useEffect(() => {
+    const memberId = Cookies.get('memberId'); // 쿠키에서 memberId 가져오기
+    const accessToken = Cookies.get('accessToken'); // 쿠키에서 accessToken 가져오기
 
-    },
-    // Add more items if needed
-  ];
+    if (!memberId || !accessToken) {
+      console.error("Missing memberId or accessToken. Redirecting to login.");
+      navigate('/login');
+      return;
+    }
+
+    const socket = new SockJS("wss://ecomarket-cuk.shop/ws");
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect(
+      { Authorization: `Bearer ${accessToken}` },
+      () => {
+        console.log("WebSocket connected");
+
+        // 회원 구독 요청
+        stompClient.subscribe(
+          `/sub/members/${memberId}`,
+          (message) => {
+            const data = JSON.parse(message.body);
+            console.log("Member subscription data:", data);
+            // 필요한 데이터 처리 로직 추가
+          }
+        );
+
+        // 경매 구독 요청
+        stompClient.subscribe(
+          `/sub/auctions/${auctionId}`,
+          (message) => {
+            const data = JSON.parse(message.body);
+            console.log("Auction subscription data:", data);
+            setAuctionData(data);
+          }
+        );
+      },
+      (error) => {
+        console.error("WebSocket connection error:", error);
+      }
+    );
+
+    return () => {
+      stompClient.disconnect(() => {
+        console.log("WebSocket disconnected");
+      });
+    };
+  }, [auctionId, navigate]);
+
   const goBack = () => {
-      navigate(-1);
+    navigate(-1);
   };
 
+  if (!auctionData) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <div >
-        <TitleGroup>
+    <div>
+      <TitleGroup>
         <img src="/assets/etcpage/Vector.svg" alt="" onClick={goBack} />
         <h1>경매</h1>
       </TitleGroup>
-      {mockAuctionItems.map((item) => (
-        <AuctionCard key={item.productId} item={item} />
-      ))}
-      <div className="margingray"></div>
-      <BidInfo currentPrice={mockAuctionItems[0].currentPrice} currentBidders={mockAuctionItems[0].currentBidders} />
-      <TransactionChart transactionVolume={mockAuctionItems[0].transactionVolume} bidHistory={mockAuctionItems[0].bidHistory} />
-      <div className="margingray"></div>
+      {/* 아래에 auctionData를 사용해 렌더링 */}
       <div className="auction-container">
-        <div className="next-bid-price">
-          <span className="label">다음 입찰 가격</span>
-          <span className="price">{mockAuctionItems[0].nextBidPrice.toLocaleString()}원</span>
-        </div>
-        <div className="bid-note">
-          <ul>
-            <li>경매 특성상 현재 입찰가에 10%를 더한 금액으로 자동 책정돼요.</li>
-            <li>더 빨리 입찰한 사람이 해당 입찰가에 입찰할 수 있어요.</li>
-            <li>한 번 입찰 시 최소되지 않으니 신중히 입찰해주세요.</li>
-          </ul>
-        </div>
+        <BidInfo
+          currentPrice={auctionData.currentPrice}
+          currentBidders={auctionData.currentBidders}
+        />
+        <TransactionChart
+          transactionVolume={auctionData.transactionVolume}
+          bidHistory={auctionData.bidHistory}
+        />
       </div>
-      <BidButton>{mockAuctionItems[0].nextBidPrice.toLocaleString()}원에 입찰하기</BidButton>
+      <BidButton>
+        {auctionData.nextBidPrice.toLocaleString()}원에 입찰하기
+      </BidButton>
     </div>
   );
 };
@@ -83,7 +102,7 @@ const TitleGroup = styled.div`
   text-align: left;
   width: 100%;
   margin-top: 20px;
-  margin-left : 12px;
+  margin-left: 12px;
   margin-bottom: 30px;
   display: flex;
   justify-content: bottom;
@@ -102,11 +121,6 @@ const TitleGroup = styled.div`
     font-weight: var(--weight-semi-bold);
     margin-bottom: 5px;
   }
-
-  p {
-    font-size: 15px;
-    color: #000000;
-  }
 `;
 
 const BidButton = styled.button`
@@ -122,5 +136,5 @@ const BidButton = styled.button`
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-bottom:100px;
+  margin-bottom: 100px;
 `;
