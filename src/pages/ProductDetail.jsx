@@ -9,8 +9,8 @@ import BidInfo from '../components/Detail/BidInfo';
 import TransactionChart from '../components/Detail/TransactionChart';
 import "../css/pages/ProductDetail.css";
 import AuctionModal from '../components/Modal/AuctionModal.jsx';
-import Cookies from 'js-cookie';
-
+import Cookies from 'js-cookie';// 매핑 함수 가져오기
+import { getCategoryDisplayName } from '../utils/categoryMapping.js';
 const apiClient = axios.create({
   baseURL: 'https://ecomarket-cuk.shop', // 기본 API URL 설정
 });
@@ -21,20 +21,7 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
   const [isRotating, setIsRotating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const categoryMap = {
-    PAINTING: '그림',
-    RECORD: '음반',
-    INSTRUMENT: '악기',
-    SHOES: '신발',
-    CLOTHING: '의류',
-    ELECTRONICS: '전자',
-    JEWELRY: '주얼리',
-    BAGS: '가방',
-    SEASONAL_ITEMS: '계절템',
-    LIMITED_EDITION: '한정판',
-  };
-  const getKoreanCategory = (englishCategory) => categoryMap[englishCategory] || englishCategory;
+  
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -95,7 +82,7 @@ const ProductDetail = () => {
 
   return (
     <div className="detail-product-detail-container">
-    <Navbar category={getKoreanCategory(product.auctionCategory)} />
+    <Navbar category={getCategoryDisplayName(product.auctionCategory)} />
     {/* <ImageSlider imageUrls={product.images} productName={product.productName} /> */}
     <ImageSlider 
       imageUrls={

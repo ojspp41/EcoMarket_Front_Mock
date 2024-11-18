@@ -35,7 +35,7 @@ function App() {
             <Route path="/upload" element={<UploadThings />} />
             <Route path="/category-page" element={<TotalCategory />} />
             <Route path="/product/:productId" element={<ProductDetail />} />
-            <Route path="/auctionproduct/:id" element={<AuctionProduct />} />
+            <Route path="/auctionproduct/:auctionId" element={<AuctionProduct />} />
             <Route path="/inspection" element={<Inspection />} />
             <Route path="/search" element={<Search />} />
           </Routes>
