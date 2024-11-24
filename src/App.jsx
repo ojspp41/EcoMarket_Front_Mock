@@ -23,7 +23,8 @@ import AuctionProduct from "./pages/AuctionProduct";
 
 import UpcomingDetail from "./pages/UpcomingDetail";
 import DoneDetail from "./pages/DoneDetail";
-
+import { Previous } from "./pages/Previous";
+import { SearchBid } from "./pages/SearchBid";
 function App() {
   return (
     <Provider store={store}>
@@ -36,6 +37,10 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
+            
+            <Route path="/previous-bids" element={<Previous />} />
+            
+            <Route path="/search-bids" element={<SearchBid />} />
             <Route path="/uploadlist" element={<UploadList />} />
             <Route path="/upload" element={<UploadThings />} />
             <Route path="/category-page" element={<TotalCategory />} />

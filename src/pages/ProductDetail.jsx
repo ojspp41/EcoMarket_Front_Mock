@@ -23,41 +23,39 @@ const ProductDetail = () => {
   const [isRotating, setIsRotating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  useEffect(() => {
-    const fetchProductDetails = async () => {
-      try {
-        const accessToken = Cookies.get('accessToken');
-        if (!accessToken) {
-          console.error("Missing accessToken. Redirecting to login.");
-          navigate('/login');
-          return;
-        }
-  
-        const response = await apiClient.get(`/products/ongoing/${productId}`, {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        console.log(response);
-        
-        // memberId 쿠키에 저장
-        const memberId = response.data.result.memberId;
-        if (memberId) {
-          Cookies.set('memberId', memberId, { expires: 1 }); // 1일 동안 쿠키 유효
-        }
-        console.log(response.data);
-        setProduct(response.data.result);
-        
-      } catch (error) {
-        console.error('Error fetching product details:', error);
+  const fetchProductDetails = async () => {
+    try {
+      const accessToken = Cookies.get('accessToken');
+      if (!accessToken) {
+        console.error("Missing accessToken. Redirecting to login.");
+        navigate('/login');
+        return;
       }
-    };
-  
+
+      const response = await apiClient.get(`/products/ongoing/${productId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log(response);
+
+      const memberId = response.data.result.memberId;
+      if (memberId) {
+        Cookies.set('memberId', memberId, { expires: 1 });
+      }
+      setProduct(response.data.result);
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+    } 
+  };
+
+  useEffect(() => {
     fetchProductDetails();
   }, [productId, navigate]);
 
   const handleRefreshClick = () => {
     setIsRotating(true);
+    fetchProductDetails(); // 데이터 다시 요청
     setTimeout(() => {
       setIsRotating(false);
     }, 700); // 0.7초 후에 애니메이션을 중지
