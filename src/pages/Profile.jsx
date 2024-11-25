@@ -13,7 +13,15 @@ function Profile() {
     { icon: "/assets/check-payment.svg", label: "송금 확인", count: 0 },
     { icon: "/assets/prepare-delivery.svg", label: "배송 준비중", count: 1 },
     { icon: "/assets/delivering.svg", label: "배송중", count: 2 },
+    { icon: "/assets/delivery-completed.svg", label: "배송 완료", count: 0 }, // New step
   ];
+  
+
+  const mockUserInfo = {
+    name: "김사원",
+    postalCode: "21986",
+    address: "인천광역시 연수구 마이로 00-00\n1층 1호",
+  };
 
   const handleNavigate = () => {
     navigate("/previous-bids"); // 원하는 경로로 이동
@@ -25,8 +33,31 @@ function Profile() {
     <div className="co">
       <Container>
         <TitleGroup>
-          <h1>상품 등록</h1>
+          <h1>마이페이지</h1>
         </TitleGroup>
+        <InfoCard>
+          <div className="info-body">
+            <div className="info-row">
+              <span className="info-label">이름 (닉네임)</span>
+              <span className="info-value">{mockUserInfo.name}</span>
+            </div>
+            <div className="info-row">
+              <span className="info-label">우편번호</span>
+              <span className="info-value">{mockUserInfo.postalCode}</span>
+            </div>
+            <div className="info-row">
+              <span className="info-label">주소</span>
+              <span className="info-value">
+                {mockUserInfo.address.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </span>
+            </div>
+          </div>
+        </InfoCard>
 
         <Form>
             <div className="recent-auctions-header">
@@ -132,7 +163,6 @@ const Container = styled.div`
 const TitleGroup = styled.div`
   text-align: left;
   width: 100%;
-  margin-bottom: 24px;
   display: flex;
   justify-content: bottom;
   img {
@@ -144,9 +174,9 @@ const TitleGroup = styled.div`
 
   h1 {
     display: inline;
-    font-size: 25px;
-    font-weight: var(--weight-semi-bold);
-    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 2px;
   }
 
   p {
@@ -158,7 +188,7 @@ const StepsContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15%;
+  gap: 6%;
   padding: 10px 0px;
   border-radius: 8px;
   width: 100%;
@@ -172,8 +202,8 @@ const Step = styled.div`
 `;
 
 const Circle = styled.div`
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   background-color: white;
   border-radius: 50%;
   display: flex;
@@ -183,8 +213,8 @@ const Circle = styled.div`
   margin-bottom: 5px;
 
   img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 50px;
     object-fit: contain;
   }
 `;
@@ -229,4 +259,38 @@ const GuideGroup = styled.div`
 `;
 
 
+
+const InfoCard = styled.div`
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  background-color: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  .info-body {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+  }
+
+  .info-label {
+    color: black;
+    font-weight: bold;
+  }
+
+  .info-value {
+    text-align: right;
+    color: #333;
+  }
+`;
 
