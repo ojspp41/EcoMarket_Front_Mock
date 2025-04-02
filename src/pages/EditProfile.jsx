@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import GetAddress from "../api/GetAddress";
-
-function Register() {
+import TopBar from "../components/TopBar";
+function EditProfile() {
   // 각각의 input 상태를 관리하기 위한 state
   const [name, setName] = useState("");
   const [nickname, setNickname] = useState("");
@@ -26,10 +26,15 @@ function Register() {
   };
 
   return (
+    
     <Container>
+      <LeftContent onClick={() => navigate(-1)}>
+        <img src="/assets/TopBar/slash.svg" alt="Slash Icon" />
+        <span>뒤로가기</span>
+      </LeftContent>
       <TitleGroup>
-        <h1>경매에 입장하기 위한 준비</h1>
-        <p>경매를 시작하기 위해 정보를 입력해주세요!</p>
+        <h1>내 정보 수정</h1>
+        <p>성함 외 변경하고 싶은 닉네임, 주소를 입력해보세요!</p>
       </TitleGroup>
 
       <Form>
@@ -88,20 +93,21 @@ function Register() {
         className={isFormComplete() ? "active" : ""}
         onClick={isFormComplete() ? goToHome : null}
       >
-        {isFormComplete() ? "시작하기" : "내용을 모두 입력해주세요!"}
+        {isFormComplete() ? "수정하기" : "내용을 모두 입력해주세요!"}
       </SubmitButton>
     </Container>
   );
 }
 
-export default Register;
+export default EditProfile;
 
 // styled-components
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  
   align-items: center;
-  padding: 84px 20px 20px 20px;
+  padding: 65px 20px 20px 20px;
   font-family: "Pretendard", sans-serif;
 `;
 
@@ -231,5 +237,23 @@ const SubmitButton = styled.button`
     ); /* 모든 입력 필드가 채워지면 배경색 변경 */
     color: white; /* 모든 입력 필드가 채워지면 글자색 변경 */
     cursor: pointer;
+  }
+`;
+const LeftContent = styled.div`
+  position: absolute; /* 위치를 절대 좌표로 설정 */
+  top: 15px; /* 상단에서 10px 떨어진 위치 */
+  left: 17px; /* 왼쪽에서 10px 떨어진 위치 */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  img {
+    width: 20px;
+    height: 20px;
+  }
+    span {
+    font-family: "Pretendard";
+    font-size: 15px;
+    color: gray;
   }
 `;
