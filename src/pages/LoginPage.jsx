@@ -11,41 +11,14 @@ function LoginPage() {
   const navigate = useNavigate();
 
   const goToRegister = () => {
-    window.location.href =
-      "https://ecomarket-cuk.shop/oauth2/kakao";
-    // alert("서비스 종료 ㅠㅠㅠㅠ");
+    navigate("/auction"); // 홈 경로로 이동
   };
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setFadeOut(true); // fade-out 시작
-      setTimeout(() => {
-        setIsLogoing(false); // 로고 화면 비활성화
-      }, 1000); // fade-out 애니메이션이 끝난 후 로고를 숨김
-    }, 1000);
 
-    return () => clearTimeout(timer);
-  }, []);
+  
 
   return (
     <>
-      {/* 스플래시 */}
-      {logoing && (
-        <SplashContainer
-          className={`second ${fadeOut ? "fade-out" : ""}`}
-          style={{ zIndex: 999 }}
-        >
-          <Slogan>
-            <p>에코 경매</p>
-            <p>코앞에서</p>
-            <p>마음에 드는 가격에</p>
-            <p>캣-하세요!</p>
-          </Slogan>
-          <LogoWrapper>
-            <img src="assets/loginpage/splashRabbit.png" alt="에코마켓 로고" />
-            <p>에코마켓</p>
-          </LogoWrapper>
-        </SplashContainer>
-      )}
+      
 
       <Container>
         <Title>
