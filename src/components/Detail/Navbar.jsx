@@ -9,7 +9,7 @@ const Navbar = ({ category }) => {
       <img
         src="/assets/TopBar/slash.svg"
         alt="뒤로가기"
-        onClick={() => navigate(-1)}
+        onClick={() => navigate('/auction')}
         className="detail-back-button"
       />
       <div className="detail-category">{category}</div>

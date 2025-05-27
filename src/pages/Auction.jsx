@@ -7,6 +7,8 @@ import auchor_categories from '../data/auchor_categories';
 import AuctionItem from '../components/AuctionItem';
 import UpcomingAuctionItem from '../components/UpcomingAuctionItem';
 import { useNavigate } from 'react-router-dom';
+import mockAuctionData from "../data/mockAuctionData";
+import mockUpcomingAuctions from "../data/mockUpcomingAuctions";
 
 import Cookies from 'js-cookie';
 import axios from "axios";
@@ -42,22 +44,6 @@ const Auction = () => {
     return acc;
   }, {});
 
-  // 로그인 확인
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const accessToken = urlParams.get("accessToken") || Cookies.get("accessToken");
-    const refreshToken = urlParams.get("refreshToken") || Cookies.get("refreshToken");
-
-    if (accessToken) {
-      if (urlParams.get("accessToken")) {
-        Cookies.set("accessToken", accessToken, { path: "/" });
-        Cookies.set("refreshToken", refreshToken, { path: "/" });
-      }
-      navigate("/");
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
 
   // 선택된 카테고리에 따라 경매 데이터 가져오기
   useEffect(() => {
@@ -77,48 +63,31 @@ const Auction = () => {
   }, []);
 
   const fetchUpcomingAuctions = async () => {
-    try {
-      const response = await publicInstance.get(`/auctions`, {
-        params: { status: "UPCOMING" },
-      });
+  try {
+    // 실제 API 호출 생략하고 목데이터 사용
+    const formattedData = mockUpcomingAuctions.map((auction) => ({
+      ...auction,
+      auctionCategory: auction.category, // 카테고리 그대로 사용
+    }));
+    setUpcomingAuctions(formattedData);
+  } catch (error) {
+    console.error("진행 예정 경매 데이터를 가져오는 중 오류 발생:", error);
+  }
+};
 
-      // 데이터 처리 및 이미지 고정
-      const formattedData = response.data.result.map((auction) => ({
-        ...auction,
-        // imageUrl: "/assets/picture2.svg", // 고정 이미지 설정
-        auctionCategory: reverseCategoryMapping[auction.auctionCategory] || auction.auctionCategory,
-      }));
-
-      setUpcomingAuctions(formattedData);
-    } catch (error) {
-      console.error("진행 예정 경매 데이터를 가져오는 중 오류 발생:", error);
-    }
-  };
 
   // 진행 중인 경매 데이터 가져오기
   const fetchAuctions = async (category) => {
-    try {
-      const mappedCategory = categoryMapping[category]; // 한글 카테고리를 영어로 변환
+  try {
+    const filtered = mockAuctionData.filter(
+      (item) => item.auctionCategory === category
+    );
+    dispatch(setAuctions(filtered));
+  } catch (error) {
+    console.error("경매 데이터를 가져오는 중 오류 발생:", error);
+  }
+};
 
-      const response = await publicInstance.get(`/auctions`, {
-        params: {
-          status: "ONGOING",
-          category: mappedCategory,
-        },
-      });
-
-      // 데이터 처리 및 이미지 고정
-      const formattedData = response.data.result.map((auction) => ({
-        ...auction,
-        // imageUrl: "/assets/picture1.svg", // 고정 이미지 설정
-        auctionCategory: reverseCategoryMapping[auction.auctionCategory] || auction.auctionCategory,
-      }));
-
-      dispatch(setAuctions(formattedData));
-    } catch (error) {
-      console.error("경매 데이터를 가져오는 중 오류 발생:", error);
-    }
-  };
 
   // 카테고리 선택 시 동작
   const handleCategoryClick = (category) => {

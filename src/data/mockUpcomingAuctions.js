@@ -3,7 +3,7 @@
 const mockUpcomingAuctions = [
     {
       id: 1,
-      img: '/assets/item1.svg',
+      img: '/assets/picture1.svg',
       title: '샤넬 시즌 탑핸들 플랩',
       sub: '샤넬 2024 TOP 5',
       category: '가방',
@@ -12,7 +12,7 @@ const mockUpcomingAuctions = [
     },
     {
       id: 2,
-      img: '/assets/item2.svg',
+      img: '/assets/picture2.svg',
       title: '크롬하츠',
       sub: '2021 밀라노 출품작',
       category: '계절템',
@@ -21,7 +21,7 @@ const mockUpcomingAuctions = [
     },
     {
       id: 3,
-      img: '/assets/item1.svg',
+      img: '/assets/picture3.svg',
       title: '미래 상품 3',
       sub: '30년 전통 명가',
       category: '도자기',
@@ -30,7 +30,7 @@ const mockUpcomingAuctions = [
     },
     {
       id: 4,
-      img: '/assets/item2.svg',
+      img: '/assets/picture4.svg',
       title: '미래 상품 4',
       sub: '2023 명장 작품',
       category: '도자기',

@@ -7,16 +7,16 @@ import AuctionItem from "../components/AuctionItem";
 import { getCategoryDisplayName } from "../utils/categoryMapping";
 
 import axios from "axios"; // Import Axios for HTTP requests
+import mockParticipatedAuctions from "../data/mockParticipatedAuctions";
+import mockShippingSteps from "../data/mockShippingSteps";
+
+
 function Profile() {
 
   const handleLogout = () => {
-    // Clear specific cookies
-    document.cookie = "accessToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-    document.cookie = "refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-    document.cookie = "memberId=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     
     // Optionally navigate to login or home page
-    navigate("/login");
+    navigate("/");
   };
 
   
@@ -44,91 +44,37 @@ function Profile() {
     navigate("/search-bids"); // 원하는 경로로 이동
   };
   useEffect(() => {
-    const fetchShippingCounts = async () => {
-      try {
-        const accessToken = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("accessToken="))
-          ?.split("=")[1];
+  // 목데이터 사용
+  const formattedAuctions = mockParticipatedAuctions.map((auction) => ({
+    ...auction,
+    auctionCategory: getCategoryDisplayName(auction.auctionCategory),
+  }));
 
-        if (!accessToken) {
-          alert("로그인이 필요합니다.");
-          navigate("/login");
-          return;
-        }
+  setAuctions(formattedAuctions);
+}, []);
 
-        const response = await axios.get("https://ecomarket-cuk.shop/shipping/count", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const data = response.data.result;
-        setSteps((prevSteps) =>
-          prevSteps.map((step) => {
-            switch (step.label) {
-              case "송금 확인":
-                return { ...step, count: data.paymentConfirmedCount };
-              case "배송 준비중":
-                return { ...step, count: data.shippingPreparingCount };
-              case "배송중":
-                return { ...step, count: data.shippingCount };
-              case "배송 완료":
-                return { ...step, count: data.deliveredCount };
-              default:
-                return step;
-            }
-          })
-        );
-      } catch (error) {
-        console.error("Failed to fetch shipping counts:", error);
-        alert("배송 정보 로드에 실패했습니다.");
-      }
-    };
-
-    fetchShippingCounts();
-  }, [navigate]);
   useEffect(() => {
-    const fetchParticipatedAuctions = async () => {
-      try {
-        const accessToken = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("accessToken="))
-          ?.split("=")[1];
+  // 목데이터 사용
+  const data = mockShippingSteps;
 
-        if (!accessToken) {
-          alert("로그인이 필요합니다.");
-          navigate("/login");
-          return;
-        }
-
-        // API 요청
-        const response = await axios.get("https://ecomarket-cuk.shop/auctions/participation", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          params: {
-            auctionStatus: "ONGOING", // 쿼리 파라미터 설정
-          },
-        });
-        
-        console.log(response);
-        const data = response.data.result;
-
-        // 데이터 처리
-        const formattedAuctions = data.map((auction) => ({
-          ...auction,
-          auctionCategory: getCategoryDisplayName(auction.auctionCategory), // 카테고리 한글 변환
-          // imageUrl: "/assets/picture1.svg", // 고정된 이미지 사용
-        }));
-
-        setAuctions(formattedAuctions); // 변환된 데이터를 상태에 저장
-      } catch (error) {
-        console.error("입찰 중인 경매 데이터를 가져오는 중 오류 발생:", error);
+  setSteps((prevSteps) =>
+    prevSteps.map((step) => {
+      switch (step.label) {
+        case "송금 확인":
+          return { ...step, count: data.paymentConfirmedCount };
+        case "배송 준비중":
+          return { ...step, count: data.shippingPreparingCount };
+        case "배송중":
+          return { ...step, count: data.shippingCount };
+        case "배송 완료":
+          return { ...step, count: data.deliveredCount };
+        default:
+          return step;
       }
-    };
+    })
+  );
+}, []);
 
-    fetchParticipatedAuctions();
-  }, [navigate]);
   return (
     <div className="co">
       <Container>
@@ -162,9 +108,7 @@ function Profile() {
         <Form>
             <div className="recent-auctions-header">
               <label>배송 중인 물품</label>
-              <span className="view-all-text">
-                조회하기 <span className="greater-sign"  onClick={handleSearch}>&gt;</span>
-              </span>
+              
               
             </div>
           <GuideGroup>
@@ -188,9 +132,6 @@ function Profile() {
         <div className="recent-auctions">
             <div className="recent-auctions-header">
               <h2 className="recent-auctions-titles">입찰 중인 물품</h2>
-              <span className="view-all-text">
-                이전 입찰 내역 <span className="greater-sign"  onClick={handleNavigate}>&gt;</span>
-              </span>
               
             </div>
             <div className="auction-list">

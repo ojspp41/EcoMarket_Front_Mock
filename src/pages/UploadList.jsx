@@ -47,15 +47,15 @@ function UploadList() {
         <GuideGroup>
           <StepContainer>
             <CircleWrapper>
-              <img src="url_to_image1" alt="상품 등록" />
+              <img src="/assets/image_1.svg" alt="상품 등록" />
             </CircleWrapper>
             <ArrowIcon>{">"}</ArrowIcon>
             <CircleWrapper>
-              <img src="url_to_image2" alt="에코마켓 검수" />
+              <img src="/assets/image_2.svg" alt="에코마켓 검수" />
             </CircleWrapper>
             <ArrowIcon>{">"}</ArrowIcon>
             <CircleWrapper>
-              <img src="url_to_image3" alt="경매 시작" />
+              <img src="/assets/image_3.svg" alt="경매 시작" />
             </CircleWrapper>
           </StepContainer>
         </GuideGroup>

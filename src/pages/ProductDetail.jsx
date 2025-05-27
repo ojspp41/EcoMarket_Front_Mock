@@ -12,6 +12,9 @@ import "../css/pages/ProductDetail.css";
 import AuctionModal from '../components/Modal/AuctionModal.jsx';
 import Cookies from 'js-cookie';// 매핑 함수 가져오기
 import { getCategoryDisplayName } from '../utils/categoryMapping.js';
+
+
+import mockProductDetail from '../data/mockProductDetail';
 const apiClient = axios.create({
   baseURL: 'https://ecomarket-cuk.shop', // 기본 API URL 설정
 });
@@ -23,39 +26,15 @@ const ProductDetail = () => {
   const [isRotating, setIsRotating] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  const fetchProductDetails = async () => {
-    try {
-      const accessToken = Cookies.get('accessToken');
-      if (!accessToken) {
-        console.error("Missing accessToken. Redirecting to login.");
-        navigate('/login');
-        return;
-      }
-
-      const response = await apiClient.get(`/products/ongoing/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      console.log(response);
-
-      const memberId = response.data.result.memberId;
-      if (memberId) {
-        Cookies.set('memberId', memberId, { expires: 1 });
-      }
-      setProduct(response.data.result);
-    } catch (error) {
-      console.error('Error fetching product details:', error);
-    } 
-  };
-
   useEffect(() => {
-    fetchProductDetails();
-  }, [productId, navigate]);
+  // API 대신 목데이터 설정
+  setProduct(mockProductDetail);
+}, [productId]);
+
+
 
   const handleRefreshClick = () => {
     setIsRotating(true);
-    fetchProductDetails(); // 데이터 다시 요청
     setTimeout(() => {
       setIsRotating(false);
     }, 700); // 0.7초 후에 애니메이션을 중지

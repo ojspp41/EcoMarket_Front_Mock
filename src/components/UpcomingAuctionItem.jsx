@@ -12,14 +12,14 @@ const formatDate = (dateString) => {
 const UpcomingAuctionItem = ({ auction }) => {
   return (
     <div className="upcoming-auction-item">
-      <img src={auction.imageUrl} alt={auction.productName} className="auction-image" />
+      <img src={auction.img} alt={auction.title} className="auction-image" />
       <div className="auction-details">
-        <p className="auction-item-categorys">{auction.auctionCategory}</p>
-        <p className="auction-title">{auction.productName}</p>
+        <p className="auction-item-categorys">{auction.category}</p>
+        <p className="auction-title">{auction.title}</p>
         <p className="auction-date">
-          <span className="date-background">{formatDate(auction.startTime)}</span>
+          <span className="date-background">{formatDate(auction.date)}</span>
         </p>
-        <p className="auction-price">{parseInt(auction.startPrice).toLocaleString()}원</p> {/* 가격 추가 */}
+        <p className="auction-price">{parseInt(auction.price).toLocaleString()}원</p> {/* 가격 추가 */}
       </div>
     </div>
   );
